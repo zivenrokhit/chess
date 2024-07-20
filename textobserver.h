@@ -12,7 +12,7 @@ class TextObserver {
     private:
     Board *subject;
     public:
-    explicit TextObserver(Board *s);
+    explicit TextObserver(Board *sub);
     ~TextObserver();
     void notify() override;
 };
