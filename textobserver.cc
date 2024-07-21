@@ -12,7 +12,7 @@ void printCurrState(Board *sub) { // print the board out
     for(int i = 0; i < 8; i++){
         out << 8 - i << " ";
         for(int j = 0; j < 8; i++){
-            out << subject->getSquare(i,j);
+            out << subject->getTile(i,j);
         }
         out << endl;
     }
@@ -46,5 +46,4 @@ void declareState(Board *sub){ // check for check, checkmate, stalemate
 void TextObserver::notify() override{
     printCurrState(subject);
     declareState(subject);
-
 }
