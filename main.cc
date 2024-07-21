@@ -19,6 +19,15 @@ int computerLevel(string computer) {
     else return 0;
 }
 
+void displayBoard(char initialBoard[8][8]) {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            cout << initialBoard[i][j];
+        }
+        cout << endl;
+    }
+}
+
 //possibly a Game method?
 bool isValidMove(Game *gamePtr, bool isBlackTurn, string startPos, string endPos) {
 
@@ -27,6 +36,8 @@ bool isValidMove(Game *gamePtr, bool isBlackTurn, string startPos, string endPos
 bool isValidSetup(char board[8][8]) {
 
 }
+
+
 int main() {
     // vector<Observer *> allObservers; //creates observers
     Game *game = nullptr;
@@ -54,25 +65,31 @@ int main() {
                     if (isValidSetup(initialBoard)) break;
                     else cout << "incorrect setup, you must rearrange some pieces!\n";
                 } else if (next == "+") {
+                    int row, col;
                     char piece;
                     string pos;
                     cin >> piece >> pos;
-                } else if (next == "-") {
-                    string pos;
-                    int row, col;
-                    cin >> pos;
-                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] < '0' || pos[1] > '9') {
+                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
+                        cout << "input was out of board bounds \n";
                         continue;
                     }
                     row = pos[1] - '1';
                     col = pos[0] - 'a';
-                    initialBoard[row][col] = '_';
-                    for (int i = 0; i < 8; ++i) {
-                        for (int j = 0; j < 8; ++j) {
-                            cout << initialBoard[i][j] << ' ';
-                        }
-                        cout << endl;
+                    initialBoard[row][col] = piece;
+                    displayBoard(initialBoard);
+                } else if (next == "-") {
+                    string pos;
+                    int row, col;
+                    cin >> pos;
+                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
+                        cout << "input was out of board bounds \n";
+                        continue;
                     }
+                    row = pos[1] - '1';
+                    col = pos[0] - 'a';
+                    if (initialBoard[row][col] == '_') continue;
+                    initialBoard[row][col] = '_';
+                    displayBoard(initialBoard);
                 } else if (next == "=") {
                     cin >> colour;
                 }
