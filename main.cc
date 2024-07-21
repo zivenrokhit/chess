@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "game.h"
 #include <string>
 
 using namespace std;
@@ -18,22 +19,66 @@ int computerLevel(string computer) {
     else return 0;
 }
 
+//possibly a Game method?
 bool isValidMove(Game *gamePtr, bool isBlackTurn, string startPos, string endPos) {
+
+}
+
+bool isValidSetup(char board[8][8]) {
 
 }
 int main() {
     // vector<Observer *> allObservers; //creates observers
-    // Game *game = nullptr
+    Game *game = nullptr;
+    char initialBoard[8][8];
     bool gameRunning = false;
     int blackScore = 0, whiteScore = 0;
     bool isBlackTurn = false;
     string command;
     while (cin >> command) {
-        // if (game.isOver()) {isBlackTurn == true ?  ++blackScore : ++whiteScore;}
-        if (command == "setup") {
-
+        if (game && game->isGameRunning()) {
+            isBlackTurn == true ?  ++blackScore : ++whiteScore;
+            gameRunning = false;
         }
-        if (command == "game") {
+        if (command == "setup") {
+            if (gameRunning) continue;
+            for (int i = 0; i < 8; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    initialBoard[i][j] = '_';
+                }
+            }
+            string next;
+            string colour = "white";
+            while (cin >> next) {
+                if (next == "done") {
+                    if (isValidSetup(initialBoard)) break;
+                    else cout << "incorrect setup, you must rearrange some pieces!\n";
+                } else if (next == "+") {
+                    char piece;
+                    string pos;
+                    cin >> piece >> pos;
+                } else if (next == "-") {
+                    string pos;
+                    int row, col;
+                    cin >> pos;
+                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] < '0' || pos[1] > '9') {
+                        continue;
+                    }
+                    row = pos[1] - '1';
+                    col = pos[0] - 'a';
+                    initialBoard[row][col] = '_';
+                    for (int i = 0; i < 8; ++i) {
+                        for (int j = 0; j < 8; ++j) {
+                            cout << initialBoard[i][j] << ' ';
+                        }
+                        cout << endl;
+                    }
+                } else if (next == "=") {
+                    cin >> colour;
+                }
+            }
+        }
+        else if (command == "game") {
             if (gameRunning) {
                 cout << "there is an ongoing game!" << endl; 
                 continue;
@@ -49,20 +94,23 @@ int main() {
             if (p2 != "human") {
                 blackComputerLevel = computerLevel(p2);
             }
-            // delete game;
-            // game = new Game{};
+            delete game;
+            game = new Game{isBlackTurn, p1, whiteComputerLevel, p2, blackComputerLevel};
             // game.start(p1, whiteComputerLevel, p2, blackComputerLevel);
         }
-        if (command == "resign") {
+        else if (command == "resign") {
             if (gameRunning) {
                 isBlackTurn == true ?  ++blackScore : ++whiteScore;
                 //game.end()
             }
             continue;
         }
-        if (command == "move") {
-
+        else if (command == "move") {
             isBlackTurn = !isBlackTurn;
+            string startPos, endPos;
+            char pawnPromo;
+            cin >> startPos >> endPos;
+
             // game.move()
         }
     }
