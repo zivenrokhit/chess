@@ -17,11 +17,11 @@ class Piece {
 public:
     Piece(Tile* position, bool hasMoved, const std::string& colour, const std::string& name);
 
-    bool isCaptured() const;
+    virtual bool isCaptured() const = 0;
 
-    void print() const;
+    virtual void print() const = 0;
 
-    bool canMove(const std::string& start, const std::string& end) const;
+    virtual bool canMove(const std::string& start, const std::string& end) const = 0;
     
 };
 
