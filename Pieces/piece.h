@@ -6,9 +6,7 @@
 
 using namespace std;
 
-class Tile {
-    
-}
+class Tile;
 
 class Piece {
     Tile* position; 
