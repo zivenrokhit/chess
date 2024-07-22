@@ -6,10 +6,6 @@
 
 using namespace std;
 
-class Tile {
-    
-}
-
 class Piece {
     Tile* position; 
     bool hasMoved;
@@ -19,7 +15,7 @@ class Piece {
 public:
     Piece(Tile* position, bool hasMoved, const std::string& colour, const std::string& name);
 
-    bool isCaptured() const;
+    bool isCaptured() const; // Extra ft: undo
 
     void print() const;
 
