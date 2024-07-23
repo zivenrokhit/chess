@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 
 class Player: public Game {
     string side;
@@ -10,3 +13,7 @@ class Player: public Game {
                 game->makeMove()
         }
 };
+
+
+#endif
+
