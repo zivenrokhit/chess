@@ -5,7 +5,7 @@
 
 class Rook : public Piece {
 public:
-    Rook(Tile* position, bool hasMoved, const std::string& colour);
+    Rook(string currPos, bool hasMoved, const std::string& colour);
 
     bool isCaptured() const override;
     void print() const override;

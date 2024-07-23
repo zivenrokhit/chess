@@ -4,7 +4,7 @@
 
 #include "board.h" // for isCaptured
 
-Bishop::Bishop(Tile* position, bool hasMoved, const std::string& colour)
+Bishop::Bishop(string currPos, bool hasMoved, const std::string& colour)
     : Piece(position, hasMoved, colour, "Bishop") {}
 
 bool Bishop::isCaptured() const {
@@ -15,9 +15,9 @@ bool Bishop::isCaptured() const {
 }
 
 void Bishop::print() const {
-    std::cout << "Bishop, Colour: " << colour
-              << ", Position: " << position
-              << ", Has moved: " << (hasMoved ? "Yes" : "No") << std::endl;
+   // needs to get color if white
+   return "p"
+   // else "P" for black
 }
 
 bool Bishop::canMove(const std::string& start, const std::string& end) const {

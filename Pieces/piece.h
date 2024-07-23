@@ -6,22 +6,20 @@
 
 using namespace std;
 
-class Tile;
-
 class Piece {
-    Tile* position; 
+    string currPos;
     bool hasMoved;
-    std::string colour;
-    std::string name;
+    string colour;
+    char symbol;
 
 public:
-    Piece(Tile* position, bool hasMoved, const std::string& colour, const std::string& name);
+    Piece(string currPos, bool hasMoved, const string& colour, const char& symbol);
 
     virtual bool isCaptured() const = 0;
 
     virtual void print() const = 0;
 
-    virtual bool canMove(const std::string& start, const std::string& end) const = 0;
+    virtual bool canMove(const string& start, const string& end) const = 0;
     
 };
 

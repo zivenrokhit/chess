@@ -1,6 +1,6 @@
 #include "pawn.h"
 
-Pawn::Pawn(Tile* position, bool hasMoved, const std::string& colour)
+Pawn::Pawn(string currPos, bool hasMoved, const std::string& colour)
     : Piece(position, hasMoved, colour, "Pawn") {}
 
 bool Pawn::isCaptured() const {
@@ -9,10 +9,10 @@ bool Pawn::isCaptured() const {
 }
 
 void Pawn::print() const {
-    std::cout << "Pawn, Colour: " << colour << ", Position: " << position << ", Has moved: " << (hasMoved ? "Yes" : "No") << std::endl;
+    // name depending on color
 }
 
-bool Pawn::canMove(const std::string& start, const std::string& end) const {
+bool Pawn::canMove(const string& start, const string& end) const {
     //movement
     return false;
 }
