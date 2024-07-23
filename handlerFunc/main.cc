@@ -47,7 +47,7 @@ int main() {
     bool isBlackTurn = false;
     string command;
     while (cin >> command) {
-        if (game && game->isGameRunning()) {
+        if (game && !game->isGameRunning()) {
             isBlackTurn == true ?  ++blackScore : ++whiteScore;
             gameRunning = false;
         }
@@ -100,6 +100,7 @@ int main() {
                 cout << "there is an ongoing game!" << endl; 
                 continue;
             }
+            //make seperate logic for computer interpreter
             isBlackTurn = false;
             string p1, p2;
             int whiteComputerLevel = 0;
@@ -112,6 +113,7 @@ int main() {
                 blackComputerLevel = computerLevel(p2);
             }
             delete game;
+            //add in the pieces map for both colours
             game = new Game{isBlackTurn, p1, whiteComputerLevel, p2, blackComputerLevel};
             // game.start(p1, whiteComputerLevel, p2, blackComputerLevel);
         }
@@ -127,8 +129,12 @@ int main() {
             string startPos, endPos;
             char pawnPromo;
             cin >> startPos >> endPos;
-
-            // game.move()
+            //consider pawn promotion if have time
+            if (game.isValidMove(isBlackTurn, startPos, endPos)) {
+                game.makeMove();
+            } else {
+                cout << "INVALID MOVE MONKEY BOY!" << endl;
+            }
         }
     }
     printFinalScore(blackScore, whiteScore);
