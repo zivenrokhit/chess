@@ -7,19 +7,19 @@
 using namespace std;
 
 class Piece {
-    Tile* position; 
+    string currPos;
     bool hasMoved;
-    std::string colour;
-    std::string name;
+    string colour;
+    char symbol;
 
 public:
-    Piece(Tile* position, bool hasMoved, const std::string& colour, const std::string& name);
+    Piece(string currPos, bool hasMoved, const string& colour, const char& symbol);
 
-    bool isCaptured() const; // Extra ft: undo
+    virtual bool isCaptured() const = 0;
 
-    void print() const;
+    virtual void print() const = 0;
 
-    bool canMove(const std::string& start, const std::string& end) const;
+    virtual bool canMove(const string& start, const string& end) const = 0;
     
 };
 

@@ -5,11 +5,11 @@
 
 class King : public Piece {
 public:
-    King(Tile* position, bool hasMoved, const std::string& colour);
+    King(string currPos, bool hasMoved, const string& colour);
 
     bool isCaptured() const override;
     void print() const override;
-    bool canMove(const std::string& start, const std::string& end) const override;
+    bool canMove(const string& start, const string& end) const override;
 };
 
 #endif // KING_H
