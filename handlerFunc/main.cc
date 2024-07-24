@@ -2,8 +2,11 @@
 #include <vector>
 #include "game.h"
 #include <string>
+#include <utility>
 
 using namespace std;
+
+const int KINGS_NEEDED = 1;
 
 void printFinalScore(int blackScore, int whiteScore) {
         cout << "Final Score:" << endl;
@@ -19,6 +22,7 @@ int computerLevel(string computer) {
     else return 0;
 }
 
+
 void displayBoard(char initialBoard[8][8]) {
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
@@ -33,8 +37,23 @@ bool isValidMove(Game *gamePtr, bool isBlackTurn, string startPos, string endPos
 
 }
 
-bool isValidSetup(char board[8][8]) {
-
+bool isValidSetup(Game *game, char board[8][8], int whiteKingCount, int blackKingCount) {
+// no pawns in first or last row, 1 king each, no one in check
+    if (whiteKingCount != KINGS_NEEDED) {
+        cout << "WHITE MUST HAVE EXACTLY 1 KING" << endl;
+        return false;
+    }
+    if (blackKingCount != KINGS_NEEDED) {
+        cout << "BLACK MUST HAVE EXACTLY 1 KING" << endl;
+        return false;
+    }
+    for (int i = 0; i < 8; i++) {
+        if (board[0][i] == 'P' || board[7][i] == 'P') {
+            cout << "YOU CANNOT HAVE PAWNS IN THE FIRST OR LAST ROW" << endl;
+            return false;
+        }
+    }
+    // if (game->isCheck()); CHECK FOR IN CHECK KINGS
 }
 
 
@@ -53,28 +72,36 @@ int main() {
         }
         if (command == "setup") {
             if (gameRunning) continue;
+            isBlackTurn = false; //start on white
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
                     initialBoard[i][j] = '_';
                 }
             }
             string next;
-            string colour = "white";
+            string colour = isBlackTurn ? "black" : "white";
+            int whiteKingCount = 0, blackKingCount = 0;
             while (cin >> next) {
                 if (next == "done") {
-                    if (isValidSetup(initialBoard)) break;
+                    if (isValidSetup(game, initialBoard, whiteKingCount, blackKingCount)) break;
                     else cout << "incorrect setup, you must rearrange some pieces!\n";
                 } else if (next == "+") {
                     int row, col;
                     char piece;
                     string pos;
                     cin >> piece >> pos;
+                    // checking for invalid input or bounds
                     if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
                         cout << "input was out of board bounds \n";
                         continue;
                     }
+                    if (piece == 'K') {
+                        isBlackTurn ? ++blackKingCount : ++whiteKingCount;
+                    }
                     row = pos[1] - '1';
                     col = pos[0] - 'a';
+                    game->removePiece(row, col);
+                    game->addPiece(isBlackTurn, piece, row, col);
                     initialBoard[row][col] = piece;
                     displayBoard(initialBoard);
                 } else if (next == "-") {
@@ -88,10 +115,12 @@ int main() {
                     row = pos[1] - '1';
                     col = pos[0] - 'a';
                     if (initialBoard[row][col] == '_') continue;
+                    game->removePiece( row, col);
                     initialBoard[row][col] = '_';
                     displayBoard(initialBoard);
                 } else if (next == "=") {
                     cin >> colour;
+                    isBlackTurn = (colour == "BLACK" ? true : false);
                 }
             }
         }
@@ -113,9 +142,8 @@ int main() {
                 blackComputerLevel = computerLevel(p2);
             }
             delete game;
-            //add in the pieces map for both colours
-            game = new Game{isBlackTurn, p1, whiteComputerLevel, p2, blackComputerLevel};
-            // game.start(p1, whiteComputerLevel, p2, blackComputerLevel);
+            // all it does is initialize player
+            game = new Game{p1, whiteComputerLevel, p2, blackComputerLevel};
         }
         else if (command == "resign") {
             if (gameRunning) {
@@ -127,14 +155,14 @@ int main() {
         else if (command == "move") {
             isBlackTurn = !isBlackTurn;
             string startPos, endPos;
-            char pawnPromo;
+            char pawnPromo = '-1';
             cin >> startPos >> endPos;
             //consider pawn promotion if have time
-            if (game.isValidMove(isBlackTurn, startPos, endPos)) {
-                game.makeMove();
-            } else {
-                cout << "INVALID MOVE MONKEY BOY!" << endl;
-            }
+            // if (game.isValidMove(isBlackTurn, startPos, endPos)) {
+            //     game.makeMove(isBlackTurn, startPos, endPos);
+            // } else {
+            //     cout << "INVALID MOVE MONKEY BOY!" << endl;
+            // }
         }
     }
     printFinalScore(blackScore, whiteScore);
