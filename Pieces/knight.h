@@ -5,11 +5,10 @@
 
 class Knight : public Piece {
 public:
-    Knight(string currPos, bool hasMoved, const string& colour);
-
+    Knight(int row, int col,const string& colour, string name);
     bool isCaptured() const override;
-    void print() const override;
-    bool canMove(const string& start, const string& end) const override;
+    vector<pair<int,int>> listOfEndPositions() override;
+    bool canMove(const string& end,vector<String> vecEndPos) const override;
 };
 
 #endif // KNIGHT_H
