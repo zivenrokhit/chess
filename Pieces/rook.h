@@ -5,11 +5,11 @@
 
 class Rook : public Piece {
 public:
-    Rook(string currPos, bool hasMoved, const std::string& colour);
+    Rook(int row, int col, Board *board, const string& colour, const char& symbol);
 
     bool isCaptured() const override;
-    void print() const override;
-    bool canMove(const std::string& start, const std::string& end) const override;
+    vector<pair<int,int>> listOfEndPositions() override;
+    bool canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos) const override;
 };
 
 #endif // ROOK_H

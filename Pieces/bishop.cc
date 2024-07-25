@@ -1,47 +1,41 @@
 #include "bishop.h"
-#include <iostream>
-#include <cmath>
 
-#include "board.h" // for isCaptured
-
-Bishop::Bishop(string currPos, bool hasMoved, const std::string& colour)
-    : Piece(position, hasMoved, colour, "Bishop") {}
+Bishop::Bishop(int row, int col, Board *board, const string& colour, const char& symbol)
+    : Piece(row, col, board, colour, symbol) {}
 
 bool Bishop::isCaptured() const {
-
-    // hypothetical:
-    // Check if the bishop is still on the board
-    return !Board::instance().isPieceOnBoard(this);
-}
-
-void Bishop::print() const {
-   // needs to get color if white
-   return "p"
-   // else "P" for black
-}
-
-bool Bishop::canMove(const std::string& start, const std::string& end) const {
-    auto [startX, startY] = positionToCoordinates(start);
-    auto [endX, endY] = positionToCoordinates(end);
-
-    // check if the move is diagonal
-    if (std::abs(startX - endX) == std::abs(startY - endY)) {
-        // movement is diagonal; check for obstacles if needed
-        // placeholder: Actual obstacle detection code would be here
-        return true;
-    }
-
     return false;
 }
 
-// helper function to convert position to coordinates
-std::pair<int, int> Bishop::positionToCoordinates(const std::string& position) const {
-    char file = position[0];
-    char rank = position[1];
+vector<pair<int, int>> Bishop::listOfEndPositions() {
+    vector<pair<int, int>> vecEndPos;
 
-    // convert file (A-H) to 0-7 and rank (1-8) to 0-7
-    int x = file - 'A';
-    int y = rank - '1';
+    // Bishop movements: diagonal movements
+    for (int i = -7; i <= 7; ++i) {
+        if (i != 0) {
+            if (row + i >= 0 && row + i < 8 && col + i >= 0 && col + i < 8) vecEndPos.emplace_back(row + i, col + i); // bottom-right and top-left
+            if (row + i >= 0 && row + i < 8 && col - i >= 0 && col - i < 8) vecEndPos.emplace_back(row + i, col - i); // bottom-left and top-right
+        }
+    }
 
-    return {x, y};
+    // filter out positions off board or occupied by own pieces
+    vecEndPos.erase(remove_if(vecEndPos.begin(), vecEndPos.end(),
+        [this](const pair<int, int>& pos) {
+            if (pos.first < 0 || pos.first >= 8 || pos.second < 0 || pos.second >= 8)
+                return true;
+            if (board->getPieceAt(pos.first, pos.second) != nullptr &&
+                board->getPieceAt(pos.first, pos.second)->getColour() == this->colour)
+                return true;
+            return false;
+        }), vecEndPos.end());
+
+    return vecEndPos;
+}
+
+bool Bishop::canMove(const pair<int, int> endPos, const vector<pair<int, int>> vecEndPos) const {
+    for (const auto& pos : vecEndPos) {
+        if (endPos == pos)
+            return true;
+    }
+    return false;
 }
