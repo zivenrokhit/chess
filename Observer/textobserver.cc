@@ -1,5 +1,8 @@
 #include "textobserver.h"
+#include <iostream>
 #include <string>
+
+using namespace std;
 
 TextObserver::TextObserver(Board *sub): subject{sub}{
     subject->attach(this);
@@ -10,36 +13,36 @@ TextObserver::~TextObserver(){
 }
 void printCurrState(Board *sub) { // print the board out
     for(int i = 0; i < 8; i++){
-        out << 8 - i << " ";
+        cout << 8 - i << " ";
         for(int j = 0; j < 8; i++){
-            out << subject->board[i][j];
+            cout << subject->board[i][j];
         }
-        out << endl;
+        cout << endl;
     }
-    out << "\n  abcdefgh"<< endl;
+    cout << "\n  abcdefgh"<< endl;
     
 }
 
 void declareState(Board *sub){ // check for check, checkmate, stalemate
     if(subject->kingsOnly()){
-        out << "Insufficint Material." << endl;
-        out << "DRAW!" << endl;
+        cout << "Insufficint Material." << endl;
+        cout << "DRAW!" << endl;
     }else if(subject->inCheck("WHITE")){
         if(subject->inCheckmate("WHITE")){
-            out << "Checkmate! Black wins!" << endl;
+            cout << "Checkmate! Black wins!" << endl;
         } 
-        out << "White is in check."
+        cout << "White is in check."
     } else if(subject->inCheck("BLACK")){
         if(subject->inCheckmate("BLACK")){
-            out << "Checkmate! White wins!" << endl;
+            cout << "Checkmate! White wins!" << endl;
         } 
-        out << "Black is in check."
+        cout << "Black is in check."
     }else if(subject->inStalemate("WHITE") || subject->inStalemate("BLACK")){
-        out << "Stalemate!" << endl;
+        cout << "Stalemate!" << endl;
     } else if (subject->resigned("WHITE")){
-        out << "Black wins!" << endl;
+        cout << "Black wins!" << endl;
     } else if(subject->resigned("BLACK")){
-        out << "White wins!" << endl;
+        cout << "White wins!" << endl;
     }
 }
 
