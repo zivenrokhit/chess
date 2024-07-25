@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <string>
+
 Knight::Knight(int row, int col, Board *board ,const string &colour, const char& symbol,const vector<pair<int,int>> vecEndPos)
     : Piece(row, col,board , colour, "KNIGHT",vecEndPos) {}
 
@@ -14,7 +15,7 @@ bool Knight::isCaptured() const {
 vector<pair<int, int>> Knight::listOfEndPositions()
 {
     // weed out positions that are filled with own color piece, off the board 
-    // regualr move L shape
+    // regular move L shape
     vector<String> vecEndPos;
     pair<int, int> coordinates(this->row - 1, this->col + 2);
     vecEndPos.emplace_back(coordinates); // up 2 left 1
@@ -92,6 +93,7 @@ bool Knight::canMove(const pair<int,int> endPos, const vector<pair<int,int>> vec
     }
     return false;
 }
+<<<<<<< HEAD
 
 
 
@@ -110,3 +112,5 @@ bool King::canMove(const string &end) const
     }
     return false;
 }
+=======
+>>>>>>> c6f71c465b8ee11e01625d2d3a3c2fa398b5316c
