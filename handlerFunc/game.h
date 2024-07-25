@@ -29,7 +29,8 @@ public:
     bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); //done
     void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); // done
     bool isGameOver(); // done
-    void print(); // done
+    void print(); //done 
+    void updateAllPseudoMoves();
 };
 
 #endif // GAME_H

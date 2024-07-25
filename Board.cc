@@ -1,10 +1,12 @@
 #include "board.h"
 
 
-Board::Board()
+Board::Board(string board[8][8]) {
+
+}
 
 Board::~Board() {
-    for (auto o : this->observers) delete o;
+    // for (auto o : this->observers) delete o;
     for (auto piece : this->whitePieces) delete piece;
     for (auto piece : this->blackPieces) delete piece;
 }
@@ -30,7 +32,6 @@ bool Board::isCheck() {
     const vector<Piece *> &opponentPieces = (color == "WHITE") ? blackPieces : whitePieces;
     for (Piece *opponentPiece : opponentPieces) {
         if (opponentPiece->canMove(king->getCurrPos())) {
-            canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos)
             return true;
         }
     }
@@ -39,6 +40,7 @@ bool Board::isCheck() {
 
 }
 
-
-
+void Board::printBoard() {
+    this->notifyObservers();
+}
 

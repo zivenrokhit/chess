@@ -46,34 +46,34 @@ Game::Game( string whitePType,
 }
 
 void Game::addPiece(bool isBlackTurn, char symbol, int row, int col) {
+    vector<pair<int, int>>tmp_moves;
     if (isBlackTurn) {
         if (symbol == 'P') {
-            //ctor params, row, col, board *, colour, symbol, 
-            this->blackPieces.emplace_back(new Pawn{row, col, board, "BLACK", 'P'});
+            this->blackPieces.emplace_back(new Pawn{row, col, board, "BLACK", "P", tmp_moves});
         } else if (symbol == 'R') {
-            this->blackPieces.emplace_back(new Rook{row, col, board, "BLACK", 'R'});
+            this->blackPieces.emplace_back(new Rook{row, col, board, "BLACK", "R", tmp_moves, false});
         } else if (symbol == 'N') {
-            this->blackPieces.emplace_back(new Knight{row, col, board, "BLACK", 'N'});
+            this->blackPieces.emplace_back(new Knight{row, col, board, "BLACK", "N", tmp_moves});
         } else if (symbol == 'B') {
-            this->blackPieces.emplace_back(new Bishop{row, col, board, "BLACK", 'B'});
+            this->blackPieces.emplace_back(new Bishop{row, col, board, "BLACK", "B", tmp_moves});
         } else if (symbol == 'Q') {
-            this->blackPieces.emplace_back(new Queen{row, col, board, "BLACK", 'Q'});
+            this->blackPieces.emplace_back(new Queen{row, col, board, "BLACK", "Q", tmp_moves});
         } else if (symbol == 'K') {
-            this->blackPieces.emplace_back(new King{row, col, board, "BLACK", 'K'});
+            this->blackPieces.emplace_back(new King{row, col, board, "BLACK", "K", tmp_moves, false});
         }
     } else {
         if (symbol == 'P') {
-            this->whitePieces.emplace_back(new Pawn{...});
+            this->whitePieces.emplace_back(new Pawn{row, col, board, "WHITE", "P", tmp_moves});
         } else if (symbol == 'R') {
-            this->whitePieces.emplace_back(new Rook{...});
+            this->whitePieces.emplace_back(new Rook{row, col, board, "WHITE", "R", tmp_moves, false});
         } else if (symbol == 'N') {
-            this->whitePieces.emplace_back(new Knight{...});
+            this->whitePieces.emplace_back(new Knight{row, col, board, "WHITE", "N", tmp_moves});
         } else if (symbol == 'B') {
-            this->whitePieces.emplace_back(new Bishop{...});
+            this->whitePieces.emplace_back(new Bishop{row, col, board, "WHITE", "B", tmp_moves});
         } else if (symbol == 'Q') {
-            this->whitePieces.emplace_back(new Queen{...});
+            this->whitePieces.emplace_back(new Queen{row, col, board, "WHITE", "Q", tmp_moves});
         } else if (symbol == 'K') {
-            this->whitePieces.emplace_back(new King{...});
+            this->whitePieces.emplace_back(new King{row, col, board, "WHITE", "K", tmp_moves, false});
         }
     }
 }
@@ -130,7 +130,7 @@ bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow,
     // fetches piece
     Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
     // checks if proposed move is in list of psuedo moves
-    for (auto coords : movingPiece->pseduoMoves()) {
+    for (auto coords : movingPiece->getMoves()) {
         if (coords.first == endRow && coords.second == endCol) return true;
     }
     return false;
@@ -140,17 +140,29 @@ void Game::print() {
     this->board->printBoard();
 }
 
+void Game::updateAllPseudoMoves() {
+    for (auto piece : this->whitePieces) {
+        piece->setMoves();
+    }
+    for (auto piece : this->blackPieces) {
+        piece->setMoves();
+    }
+}
+
 void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
     // must check if move is valid first!!!
     // two cases: 1. piece moves to empty spot, 2. piece kills other piece
 
+    // needs to update, 
+    this->updateAllPseudoMoves();
     // remove piece still works if nothing is there
     this->removePiece(endRow, endCol);
     this->boardArr[endRow][endCol] = this->boardArr[startRow][startCol];
     this->boardArr[startRow][startCol] = '_';
-    Piece *movingPiece = this->getPiece(startRow, startCol);
+    Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
     movingPiece->setCurrentPos(endRow, endCol);
-    this->print();
+    this->updateAllPseudoMoves();
+    this->board->printBoard();
 
 
 }

@@ -1,7 +1,7 @@
 #include "rook.h"
 
-Rook::Rook(int row, int col, Board *board, const string& colour, const char& symbol)
-    : Piece(row, col, board, colour, symbol) {}
+Rook::Rook(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos ,bool hasMoved)
+    : Piece(row, col,board , colour, "ROOK", vecEndPos), hasMoved(hasMoved) {}
 
 bool Rook::isCaptured() const {
     return false;
@@ -30,7 +30,7 @@ vector<pair<int, int>> Rook::listOfEndPositions() {
     return vecEndPos;
 }
 
-bool Rook::canMove(const pair<int, int> endPos, const vector<pair<int, int>> vecEndPos) const {
+bool Rook::canMove(const pair<int, int> endPos) const {
     for (const auto& pos : vecEndPos) {
         if (endPos == pos)
             return true;
