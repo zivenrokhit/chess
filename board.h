@@ -9,10 +9,10 @@
 
 // concrete subject
 class Board: public Subject {
-    string board[8][8];
     // vector<Observer *>observers; already part of the subject class
-    vector<Piece *>whitePieces
-    vector<Piece *>blackPieces
+    string board[8][8];
+    vector<Piece *>whitePieces;
+    vector<Piece *>blackPieces;
     bool resigned;
     public:
         Board(string board[8][8]);
@@ -50,8 +50,7 @@ class Board: public Subject {
         // this->board[extract startPos] = '_';
         // piece->currentPosition = endPos;
         // }
-        void printBoard();
-        // {this->notifyObservers()}
+        void printBoard(); // {this->notifyObservers()}
         bool kingsOnly();
         bool isCheckmate();
         bool isStalemate();
