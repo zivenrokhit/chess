@@ -57,6 +57,7 @@ class Board: public Subject {
         bool isStalemate();
         bool isCheck();
         ~Board();
+        
 };
 
 

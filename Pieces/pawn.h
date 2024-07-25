@@ -10,10 +10,10 @@ using namespace std;
 class Pawn : public Piece {
     
     public:
-    Pawn(int row, int col, Board *board,const string& colour, const char& symbol);
+    Pawn(int row, int col, Board *board,const string& colour, const char& symbol,const vector<pair<int,int>> vecEndPos);
     bool isCaptured() const override;
     vector<pair<int,int>> listOfEndPositions() override;
-    bool canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos) const override;
+    bool canMove(const pair<int,int> endPos) const override;
 };
 
 #endif // PAWN_H

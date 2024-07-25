@@ -12,4 +12,6 @@ string Piece::getColour() const{
 string Piece::getSymbol() const{
     return symbol;
 }
-
+vector<pair<int,int>> Piece::getMoves() const {
+    return vecEndPos;
+}

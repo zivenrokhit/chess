@@ -3,8 +3,8 @@
 #include <vector>
 #include <utility>
 #include <string>
-Knight::Knight(int row, int col, Board *board ,const string &colour, const char& symbol)
-    : Piece(row, col,board , colour, "KNIGHT") {}
+Knight::Knight(int row, int col, Board *board ,const string &colour, const char& symbol,const vector<pair<int,int>> vecEndPos)
+    : Piece(row, col,board , colour, "KNIGHT",vecEndPos) {}
 
 bool Knight::isCaptured() const {
     return false;
@@ -98,7 +98,7 @@ bool Knight::canMove(const pair<int,int> endPos, const vector<pair<int,int>> vec
 
 
 
-bool King::canMove(const string &end, vector<String> vecEndPos) const
+bool King::canMove(const string &end) const
 {
     for (auto itm : vecEndPos)
     {
