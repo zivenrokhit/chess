@@ -3,13 +3,13 @@
 
 #include "piece.h"
 
+
 class Knight : public Piece {
 public:
-    Knight(string currPos, bool hasMoved, const string& colour);
-
+    Knight(int row, int col, Board *board,const string& colour, const char& symbol);
     bool isCaptured() const override;
-    void print() const override;
-    bool canMove(const string& start, const string& end) const override;
+    vector<pair<int,int>> listOfEndPositions() override;
+    bool canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos) const override;
 };
 
 #endif // KNIGHT_H
