@@ -92,21 +92,3 @@ bool Knight::canMove(const pair<int,int> endPos, const vector<pair<int,int>> vec
     }
     return false;
 }
-
-
-
-
-
-
-bool King::canMove(const string &end, vector<String> vecEndPos) const
-{
-    for (auto itm : vecEndPos)
-    {
-        if (end == itm)
-        {
-            return true;
-            break;
-        }
-    }
-    return false;
-}
