@@ -33,9 +33,11 @@ void displayBoard(char initialBoard[8][8]) {
     }
 }
 
-//possibly a Game method?
-bool isValidMove(Game *gamePtr, bool isBlackTurn, string startPos, string endPos) {
-
+bool isValidCoord(const string &pos) {
+    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
+        return true;
+    }
+    return false;
 }
 
 bool isValidSetup(Game *game, char board[8][8], int whiteKingCount, int blackKingCount) {
@@ -54,7 +56,7 @@ bool isValidSetup(Game *game, char board[8][8], int whiteKingCount, int blackKin
             return false;
         }
     }
-    // if (game->isCheck()); CHECK FOR IN CHECK KINGS
+    // return game->check();
 }
 
 
@@ -67,10 +69,6 @@ int main() {
     bool isBlackTurn = false;
     string command;
     while (cin >> command) {
-        if (game && !game->isGameRunning()) {
-            isBlackTurn == true ?  ++blackScore : ++whiteScore;
-            gameRunning = false;
-        }
         if (command == "setup") {
             if (gameRunning) continue;
             isBlackTurn = false; //start on white
@@ -92,8 +90,8 @@ int main() {
                     string pos;
                     cin >> piece >> pos;
                     // checking for invalid input or bounds
-                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
-                        cout << "input was out of board bounds \n";
+                    if (!isValidCoord(pos)) {
+                        cout << "inavlid coordinate provided" << endl;
                         continue;
                     }
                     if (piece == 'K') {
@@ -109,8 +107,8 @@ int main() {
                     string pos;
                     int row, col;
                     cin >> pos;
-                    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
-                        cout << "input was out of board bounds \n";
+                    if (!isValidCoord(pos)) {
+                        cout << "inavlid coordinate provided" << endl;
                         continue;
                     }
                     row = pos[0] - '1';
@@ -145,11 +143,13 @@ int main() {
             delete game;
             // all it does is initialize player
             game = new Game{p1, whiteComputerLevel, p2, blackComputerLevel};
+            gameRunning = true;
         }
         else if (command == "resign") {
             if (gameRunning) {
                 isBlackTurn == true ?  ++blackScore : ++whiteScore;
                 //game.end()
+                gameRunning = false;
             }
             continue;
         }
@@ -159,22 +159,24 @@ int main() {
                 continue;
             }
             isBlackTurn = !isBlackTurn;
+            // add logic for computer moving and call appopriate method 
+            // so that computer moves and input doesnt read for coords!
             string startPos, endPos;
             char pawnPromo = '-1';
             cin >> startPos >> endPos;
             int startRow = startPos[0] - '1';
-            int startCol = startCol[1] - 'a';
-            if (startPos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
-                cout << "input was out of board bounds \n";
+            int startCol = startPos[1] - 'a';
+            int endRow = endPos[0] - '1';
+            int endCol = endPos[1] - 'a';
+            if (!isValidCoord(startPos) || !isValidCoord(endPos)) {
+                cout << "inavlid coordinate provided" << endl;
                 continue;
             }
-            if (initialBoard[startCoords.first][startCoords.second] == '_') {
-                cout << "Cannot move empty square" << endl;
-                continue;
-            }
-            if (game->isValidMove(isBlackTurn, startPos, endPos)) {
-                initialBoard[startCoords.first][startCoords.second] == '_';
-                game->removePiece()
+            if (game->isValidMove(isBlackTurn, startRow, startCol, endRow, endCol)) {
+                char movingPiece = initialBoard[startRow][startCol];
+                initialBoard[startRow][startCol] == '_';
+                initialBoard[endRow][endCol] == movingPiece;
+                game->makeMove(isBlackTurn, startRow, startCol, endRow, endCol);
             }
             //consider pawn promotion if have time
             // if (game.isValidMove(isBlackTurn, startPos, endPos)) {
@@ -182,9 +184,13 @@ int main() {
             // } else {
             //     cout << "INVALID MOVE MONKEY BOY!" << endl;
             // }
+            if (game->isGameOver()) {
+                isBlackTurn == true ?  ++blackScore : ++whiteScore;
+                gameRunning = false;
+                printFinalScore(blackScore, whiteScore);
+            }
         }
     }
-    printFinalScore(blackScore, whiteScore);
     // for (auto o : allObservers) delete o;
     return 0;
 }

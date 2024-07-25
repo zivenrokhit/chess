@@ -94,9 +94,73 @@ void Game::removePiece(int row, int col) {
     }
 }
 
-bool Game::isGameRunning() {
+bool Game::hasPiece(bool isBlackTurn, int row, int col) {
+    if (isBlackTurn) {
+        for (auto piece : this->blackPieces) {
+            pair<int, int> coords = make_pair(row, col);
+            if (piece->getCurrPos() == coords) return true;
+        }
+        return false;
+    }
+    for (auto piece : this->whitePieces) {
+        pair<int, int> coords = make_pair(row, col);
+        if (piece->getCurrPos() == coords) return true;
+    }
+    return false;
+    
 }
+
+Piece *Game::getPiece(bool isBlackTurn, int row, int col) {
+    if (isBlackTurn) {
+        for (auto piece : this->blackPieces) {
+            pair<int, int> coords = make_pair(row, col);
+            if (piece->getCurrPos() == coords) return piece;
+        }
+    }
+    for (auto piece : this->whitePieces) {
+        pair<int, int> coords = make_pair(row, col);
+        if (piece->getCurrPos() == coords) return piece;
+    }
+}
+
+
+bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
+    //check if player is moving a piece they own
+    if (!this->hasPiece(isBlackTurn, startRow, startCol)) return false;
+    // fetches piece
+    Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
+    // checks if proposed move is in list of psuedo moves
+    for (auto coords : movingPiece->pseduoMoves()) {
+        if (coords.first == endRow && coords.second == endCol) return true;
+    }
+    return false;
+}
+
+void Game::print() {
+    this->board->printBoard();
+}
+
+void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
+    // must check if move is valid first!!!
+    // two cases: 1. piece moves to empty spot, 2. piece kills other piece
+
+    // remove piece still works if nothing is there
+    this->removePiece(endRow, endCol);
+    this->boardArr[endRow][endCol] = this->boardArr[startRow][startCol];
+    this->boardArr[startRow][startCol] = '_';
+    Piece *movingPiece = this->getPiece(startRow, startCol);
+    movingPiece->setCurrentPos(endRow, endCol);
+    this->print();
+
+
+}
+
+bool Game::isGameOver() {
+    return this->board->hasCheckmate() || this->board->hasStalemate();
+}
+
 Game::~Game() {
+    delete boardArr; // maybe
     delete whitePlayer; 
     delete blackPlayer;
     for (auto piece : this->whitePieces) delete piece; 

@@ -21,15 +21,15 @@ class Game {
 public: 
     Game(string whitePType, int whitePLevel,
          string blackPType, int blackPLevel); // done
-    void addPiece(bool isBlackTurn, char symbol, int row, int col);
-    void removePiece(int row, int col);
+    void addPiece(bool isBlackTurn, char symbol, int row, int col); // done
+    void removePiece(int row, int col); //done 
+    bool hasPiece(bool isBlackTurn, int row, int col); // done
+    Piece *getPiece(bool isBlackTurn, int row, int col); //done
     ~Game(); // must itr through pieces and delete off heap
-    bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol);
-    void start();
-    void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol);
-    bool isGameRunning();
-    void print();
-    void resign();
+    bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); //done
+    void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); // done
+    bool isGameOver(); // done
+    void print(); // done
 };
 
 #endif // GAME_H
