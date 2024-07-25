@@ -46,7 +46,7 @@ vector<pair<int, int>> King::listOfEndPositions(Board &board)
         if (board[it->first][it->second] != "_"){ // means its not empty so we need to check if its our piece or opp piece
             // check white pieces
             if(this->colour == "WHITE"){
-                for (itr : this->board->getWhitePieces())
+                for (auto itr : this->board->whitePieces())
                 {
                     pair<int, int> tempPair;
                     tempPair.first = it.first;
