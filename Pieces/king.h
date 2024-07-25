@@ -9,12 +9,14 @@
 using namespace std;
 
 class King : public Piece {
-
+    private:
+    bool hasMoved;
     public:
-    King(int row, int col, bool hasMoved, const string& colour, string name);
+    King(int row, int col, Board *board ,const string& colour, const char& symbol, bool hasMoved);
+
     bool isCaptured() const override;
     vector<pair<int,int>> listOfEndPositions() override;
-    bool canMove(const string& end,vector<String> vecEndPos) const override;
+    bool canMove(const pair<int,int> endPos,const vector<pair<int,int>> vecEndPos) const override;
    
 };
 

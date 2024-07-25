@@ -1,12 +1,8 @@
 #include "king.h"
-#include <vector>
-#include <utility>
-#include <string>
-
 using namespace std;
 
-King::King(int row, int col, bool hasMoved, const string &colour, string name)
-    : Piece(row, col, hasMoved, colour, "KING") {}
+King::King(int row, int col,Board *board ,bool hasMoved, const string &colour, const char& symbol)
+    : Piece(row, col,board , colour, "KING"), hasMoved(hasMoved){}
 
 bool King::isCaptured() const
 {
@@ -81,11 +77,11 @@ vector<pair<int, int>> King::listOfEndPositions(Board &board)
     return vecEndPos
 }
 
-bool King::canMove(const string &end, vector<String> vecEndPos) const
+bool King::canMove(const pair<int,int> endPos,const vector<pair<int,int>> vecEndPos) const
 {
     for (auto itm : vecEndPos)
     {
-        if (end == itm)
+        if ( endPos.first== itm.first && endPos.second == itm.second)
         {
             return true;
             break;

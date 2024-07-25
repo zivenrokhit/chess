@@ -1,7 +1,7 @@
 #include "pawn.h"
 
-Pawn::Pawn(int row, int col, const string& colour, string& name)
-    : Piece(row, col,colour, "Pawn") {}
+Pawn::Pawn(int row, int col, Board *board ,const string& colour, const char& symbol)
+    : Piece(row, col,board , colour, "PAWN") {}
 
 bool Pawn::isCaptured() const {
     return false;
@@ -12,10 +12,12 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
     // mov forward 2 only allowed when pawn on first row
 
 
-    if(hasMoved){
+    if(this->row == 1){
         vector<String> vecEndPos;
         pair<int, int> coordinates(this->row, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1
+        pair<int, int> coordinates(this->row, this->col + 2); 
+        vecEndPos.emplace_back(coordinates); // up 2
         pair<int, int> coordinates(this->row  + 1, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1 right 1
         pair<int, int> coordinates(this->row  - 1, this->col + 1); 
@@ -24,8 +26,6 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
         vector<String> vecEndPos;
         pair<int, int> coordinates(this->row, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1
-        pair<int, int> coordinates(this->row, this->col + 2); 
-        vecEndPos.emplace_back(coordinates); // up 2
         pair<int, int> coordinates(this->row  + 1, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1 right 1
         pair<int, int> coordinates(this->row  - 1, this->col + 1); 
@@ -66,10 +66,10 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
 }
 
 
-bool Pawn::canMove(const string& end,vector<String> vecEndPos) const {
+bool Pawn::canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos) const {
     for (auto itm : vecEndPos)
     {
-        if (end == itm)
+        if (endPos.first == itm.first && endPos.second == itm.second)
         {
             return true;
             break;
