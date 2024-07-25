@@ -12,7 +12,7 @@ void printCurrState(Board *sub) { // print the board out
     for(int i = 0; i < 8; i++){
         out << 8 - i << " ";
         for(int j = 0; j < 8; i++){
-            out << subject->board[i][j]; /// not coorrect snytax
+            out << subject->board[i][j];
         }
         out << endl;
     }
