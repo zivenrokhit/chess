@@ -3,6 +3,7 @@
 #include "game.h"
 #include <string>
 #include <utility>
+#include "converter.h"
 
 using namespace std;
 
@@ -112,8 +113,8 @@ int main() {
                         cout << "input was out of board bounds \n";
                         continue;
                     }
-                    row = pos[1] - '1';
-                    col = pos[0] - 'a';
+                    row = pos[0] - '1';
+                    col = pos[1] - 'a';
                     if (initialBoard[row][col] == '_') continue;
                     game->removePiece( row, col);
                     initialBoard[row][col] = '_';
@@ -153,10 +154,28 @@ int main() {
             continue;
         }
         else if (command == "move") {
+            if (!gameRunning) {
+                cout << "there is no game running!" << endl;
+                continue;
+            }
             isBlackTurn = !isBlackTurn;
             string startPos, endPos;
             char pawnPromo = '-1';
             cin >> startPos >> endPos;
+            int startRow = startPos[0] - '1';
+            int startCol = startCol[1] - 'a';
+            if (startPos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
+                cout << "input was out of board bounds \n";
+                continue;
+            }
+            if (initialBoard[startCoords.first][startCoords.second] == '_') {
+                cout << "Cannot move empty square" << endl;
+                continue;
+            }
+            if (game->isValidMove(isBlackTurn, startPos, endPos)) {
+                initialBoard[startCoords.first][startCoords.second] == '_';
+                game->removePiece()
+            }
             //consider pawn promotion if have time
             // if (game.isValidMove(isBlackTurn, startPos, endPos)) {
             //     game.makeMove(isBlackTurn, startPos, endPos);

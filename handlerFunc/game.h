@@ -24,9 +24,9 @@ public:
     void addPiece(bool isBlackTurn, char symbol, int row, int col);
     void removePiece(int row, int col);
     ~Game(); // must itr through pieces and delete off heap
-    bool isValidMove(bool isBlackTurn, string startPos, string endPos);
+    bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol);
     void start();
-    void makeMove(bool isBlackTurn, string startPos, string endPos);
+    void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol);
     bool isGameRunning();
     void print();
     void resign();

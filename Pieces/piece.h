@@ -16,7 +16,7 @@ class Piece {
     
 
     public:
-    Piece(int row, int col, Board *board,const string& colour, const char& symbol);
+    Piece(int row, int col, Board *board, const string& colour, const char& symbol);
 
     virtual bool isCaptured() const = 0;
 
