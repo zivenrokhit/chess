@@ -1,6 +1,6 @@
 #include "pawn.h"
 
-Pawn::Pawn(int row, int col, Board *board ,const string& colour, const char& symbol,const vector<pair<int,int>> vecEndPos)
+Pawn::Pawn(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos)
     : Piece(row, col,board , colour, "PAWN",vecEndPos) {}
 
 bool Pawn::isCaptured() const {

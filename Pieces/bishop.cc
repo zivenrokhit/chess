@@ -1,7 +1,7 @@
 #include "bishop.h"
 
-Bishop::Bishop(int row, int col, Board *board, const string& colour, const char& symbol)
-    : Piece(row, col, board, colour, symbol) {}
+Bishop::Bishop(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos)
+    : Piece(row, col,board , colour, "BISHOP",vecEndPos) {}
 
 bool Bishop::isCaptured() const {
     return false;

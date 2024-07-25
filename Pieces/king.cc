@@ -1,7 +1,7 @@
 #include "king.h"
 using namespace std;
 
-King::King(int row, int col,Board *board, const string &colour, const char& symbol,bool hasMoved,const vector<pair<int,int>> vecEndPos,bool hasMoved)
+King::King(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos ,bool hasMoved)
     : Piece(row, col,board , colour, "KING", vecEndPos), hasMoved(hasMoved){}
 
 bool King::isCaptured() const

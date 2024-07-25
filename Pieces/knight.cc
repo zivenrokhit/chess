@@ -4,7 +4,7 @@
 #include <utility>
 #include <string>
 
-Knight::Knight(int row, int col, Board *board ,const string &colour, const char& symbol,const vector<pair<int,int>> vecEndPos)
+Knight::Knight(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos)
     : Piece(row, col,board , colour, "KNIGHT",vecEndPos) {}
 
 bool Knight::isCaptured() const {

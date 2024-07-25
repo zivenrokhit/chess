@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+
+#include "board.h"
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -14,18 +16,20 @@ class Piece {
     int col;
     Board *board;
     string colour;
-    char symbol;
-    const vector<pair<int,int>> vecEndPos;
+    string symbol;
+    vector<pair<int,int>> vecEndPos;
     public:
-    Piece(int row, int col, Board *board,const string& colour, const char& symbol,const vector<pair<int,int>> vecEndPos);
+    Piece(int row, int col, Board *board,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos);
     virtual bool isCaptured() const = 0;
-    virtual void print() const = 0;
     virtual bool canMove(const pair<int,int> endPos) const = 0;
-    vector<pair<int, int>> getCurrPos() const;
+    virtual vector<pair<int,int>> listOfEndPositions() = 0;
+    pair<int, int> getCurrPos() const;
     string getColour() const;
     string getSymbol() const;
     vector<pair<int,int>> getMoves() const;
     virtual ~Piece() = default;
+    void setCurrentPos(int row, int col);
+    void setMoves();
 };
 
 #endif // PIECE_H
