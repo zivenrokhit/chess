@@ -1,22 +1,15 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#include <string>
-#include <utility> // For std::pair
-
-//forward declarations 
-class Piece;
+#include "piece.h"
 
 class Bishop : public Piece {
 public:
-    Bishop(string currPos, bool hasMoved, const std::string& colour);
+    Bishop(int row, int col, Board *board, const string& colour, const char& symbol);
 
     bool isCaptured() const override;
-    void print() const override;
-    bool canMove(const std::string& start, const std::string& end) const override;
-
-private:
-    std::pair<int, int> positionToCoordinates(const string& position) const;
+    vector<pair<int,int>> listOfEndPositions() override;
+    bool canMove(const pair<int,int> endPos, const vector<pair<int,int>> vecEndPos) const override;
 };
 
 #endif // BISHOP_H
