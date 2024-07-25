@@ -11,10 +11,10 @@ Board::~Board() {
     for (auto piece : this->blackPieces) delete piece;
 }
 
-bool Board::isCheck() {
+bool Board::isCheck(bool isBlackTurn) {
     // Find the King
     Piece *king = nullptr;
-    const vector<Piece *> &pieces = (color == "WHITE") ? whitePieces : blackPieces;
+    const vector<Piece *> &pieces = isBlackTurn ? blackPieces : whitePieces;
     for (Piece *piece : pieces) {
         if (piece->getSymbol() == "KING") {
             king = piece;
@@ -29,7 +29,7 @@ bool Board::isCheck() {
     int kingCol = (king->getCurrPos()).second;
 
     // Check all opponent pieces to see if any can move to the King's position
-    const vector<Piece *> &opponentPieces = (color == "WHITE") ? blackPieces : whitePieces;
+    const vector<Piece *> &opponentPieces = isBlackTurn ? whitePieces : blackPieces;
     for (Piece *opponentPiece : opponentPieces) {
         if (opponentPiece->canMove(king->getCurrPos())) {
             return true;
