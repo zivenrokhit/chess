@@ -23,7 +23,7 @@ vector<pair<int, int>> Knight::listOfEndPositions()
     vecEndPos.emplace_back(coordinates); // up 2 right 1
     pair<int, int> coordinates(this->row + 1, this->col - 2);
     vecEndPos.emplace_back(coordinates); // down 2 right 1
-    pair<int, int> coordinates(this->row - 1, this->col -2);
+    pair<int, int> coordinates(this->row - 1, this->col - 2);
     vecEndPos.emplace_back(coordinates); // down 2 left 1
     pair<int, int> coordinates(this->row + 2, this->col + 1);
     vecEndPos.emplace_back(coordinates); // up 1 right 2
@@ -93,24 +93,3 @@ bool Knight::canMove(const pair<int,int> endPos, const vector<pair<int,int>> vec
     }
     return false;
 }
-<<<<<<< HEAD
-
-
-
-
-
-
-bool King::canMove(const string &end) const
-{
-    for (auto itm : vecEndPos)
-    {
-        if (end == itm)
-        {
-            return true;
-            break;
-        }
-    }
-    return false;
-}
-=======
->>>>>>> c6f71c465b8ee11e01625d2d3a3c2fa398b5316c

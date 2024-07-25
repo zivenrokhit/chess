@@ -47,7 +47,7 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
                     }
                 }
 
-            }else {
+            } else {
                 for (itr : this->board->getBlackPieces()){
                     pair<int, int> tempPair;
                     tempPair.first = it.first;

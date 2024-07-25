@@ -19,7 +19,7 @@ vector<pair<int, int>> Rook::listOfEndPositions() {
     // filter out positions off board or occupied by own pieces
     vecEndPos.erase(remove_if(vecEndPos.begin(), vecEndPos.end(),
         [this](const pair<int, int>& pos) {
-            if (pos.first < 0 || pos.first >= 8 || pos.second < 0 || pos.second >= 8)
+            if (pos.first < 0 || pos.first > 7 || pos.second < 0 || pos.second > 7)
                 return true;
             if (board->getPieceAt(pos.first, pos.second) != nullptr &&
                 board->getPieceAt(pos.first, pos.second)->getColour() == this->colour)
