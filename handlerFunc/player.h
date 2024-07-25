@@ -1,12 +1,16 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+#include "game.h"
 
-class Player: public Game {
-    string side;
-    public:
-        void genMove();
+class Player {
+    friend class Game;
+    protected:
+        string side;
         Game *game;
-        // {
-        for piece in whitePieces:
-            for move in psuedo moves:
-                game->makeMove()
-        }
+    public:
+        virtual ~Player() = 0;
 };
+
+
+#endif
+
