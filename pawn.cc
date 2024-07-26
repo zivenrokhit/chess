@@ -12,7 +12,7 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
     // mov forward 2 only allowed when pawn on first row
 
     if(this->row == 1){
-        vector<string> vecEndPos;
+        vector<pair<int, int>> vecEndPos;
         pair<int, int> coordinates(this->row, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1
         pair<int, int> coordinates(this->row, this->col + 2); 
@@ -31,34 +31,41 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
         vecEndPos.emplace_back(coordinates); // up 1 left 1
     }
 
-    // if piece is blocking forward movement remove it, any piece
-    for (auto it = vecEndPos.begin(); it != vecEndPos.end(); it++){
-        if( board[it.first][it.second]!= "_" ||  board[it.first][it.second]!= "_" ){
-            // check whats in it
-            if(this->colour == "WHITE"){
-                for (itr : this->board->getWhitePieces()){
-                    pair<int, int> tempPair;
-                    tempPair.first = it.first;
-                    tempPair.second = it.second;
-                    if (itr.getCurrPos() == tempPair)
-                    {
-                        vecEndPos.erase(it); // if a white piece is infront or diagonal we remove it
-                    }
-                }
-
-            } else {
-                for (itr : this->board->getBlackPieces()){
-                    pair<int, int> tempPair;
-                    tempPair.first = it.first;
-                    tempPair.second = it.second;
-                    if (itr.getCurrPos() == tempPair)
-                    {
-                        vecEndPos.erase(it); // if a Black piece is infront or diagonal we remove it
-                    }
-                }  
-            }
+      for (auto it = vecEndPos.begin(); it != vecEndPos.end(); it++){
+        if (it->first < 0 || it->second > 7)
+        {
+            vecEndPos.erase(it);
         }
     }
+    for (auto it = vecEndPos.begin(); it != vecEndPos.end(); it++){
+            // Check if the pair should be removed
+            if (this->board->board[it->first][it->second] != "_"){ // means its not empty so we need to check if its our piece or opp piece
+                // check white pieces
+                if(this->colour == "WHITE"){
+                    for (auto itr : this->board->getWhitePieces())
+                    {
+                        pair<int, int> tempPair;
+                        tempPair.first = it->first;
+                        tempPair.second = it->second;
+                        if (itr->getCurrPos() == tempPair)
+                        {
+                            vecEndPos.erase(it);
+                        }
+                    }              
+                } else {
+                    for (auto itr : this->board->getBlackPieces())
+                    {
+                        pair<int, int> tempPair;
+                        tempPair.first = it->first;
+                        tempPair.second = it->second;
+                        if (itr->getCurrPos() == tempPair)
+                        {
+                            vecEndPos.erase(it);
+                        }
+                    }
+                }
+            } // end if
+        }
 
    return vecEndPos;
 
