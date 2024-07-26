@@ -30,6 +30,7 @@ class Piece {
     virtual ~Piece() = default;
     void setCurrentPos(int row, int col);
     void setMoves();
+    void filterForCauseCheck();
 };
 
 #endif // PIECE_H

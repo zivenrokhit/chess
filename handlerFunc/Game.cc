@@ -30,7 +30,6 @@ Game::Game( string whitePType,
         } else if (whitePLevel == 4) {
             this->whitePlayer = new Level4 {"white", this};
         }
-        
         if (blackPLevel == 0) {
             this->blackPlayer = new Human {"black", this};
         } else if (blackPLevel == 1) {
@@ -45,53 +44,57 @@ Game::Game( string whitePType,
 
 }
 
-void Game::addPiece(bool isBlackTurn, char symbol, int row, int col) {
+void Game::addPiece(bool isBlackTurn, string symbol, int row, int col) {
     vector<pair<int, int>>tmp_moves;
     if (isBlackTurn) {
-        if (symbol == 'P') {
+        if (symbol == "P") {
             this->blackPieces.emplace_back(new Pawn{row, col, board, "BLACK", "P", tmp_moves});
-        } else if (symbol == 'R') {
+        } else if (symbol == "R") {
             this->blackPieces.emplace_back(new Rook{row, col, board, "BLACK", "R", tmp_moves, false});
-        } else if (symbol == 'N') {
+        } else if (symbol == "N") {
             this->blackPieces.emplace_back(new Knight{row, col, board, "BLACK", "N", tmp_moves});
-        } else if (symbol == 'B') {
+        } else if (symbol == "B") {
             this->blackPieces.emplace_back(new Bishop{row, col, board, "BLACK", "B", tmp_moves});
-        } else if (symbol == 'Q') {
+        } else if (symbol == "Q") {
             this->blackPieces.emplace_back(new Queen{row, col, board, "BLACK", "Q", tmp_moves});
-        } else if (symbol == 'K') {
+        } else if (symbol == "K") {
             this->blackPieces.emplace_back(new King{row, col, board, "BLACK", "K", tmp_moves, false});
         }
     } else {
-        if (symbol == 'P') {
+        if (symbol == "P") {
             this->whitePieces.emplace_back(new Pawn{row, col, board, "WHITE", "P", tmp_moves});
-        } else if (symbol == 'R') {
+        } else if (symbol == "R") {
             this->whitePieces.emplace_back(new Rook{row, col, board, "WHITE", "R", tmp_moves, false});
-        } else if (symbol == 'N') {
+        } else if (symbol == "N") {
             this->whitePieces.emplace_back(new Knight{row, col, board, "WHITE", "N", tmp_moves});
-        } else if (symbol == 'B') {
+        } else if (symbol == "B") {
             this->whitePieces.emplace_back(new Bishop{row, col, board, "WHITE", "B", tmp_moves});
-        } else if (symbol == 'Q') {
+        } else if (symbol == "Q") {
             this->whitePieces.emplace_back(new Queen{row, col, board, "WHITE", "Q", tmp_moves});
-        } else if (symbol == 'K') {
+        } else if (symbol == "K") {
             this->whitePieces.emplace_back(new King{row, col, board, "WHITE", "K", tmp_moves, false});
         }
     }
 }
-void Game::removePiece(int row, int col) {
+Piece *Game::removePiece(int row, int col) {
+    Piece *deadPiece = nullptr;
     for (auto it = blackPieces.begin(); it != blackPieces.end(); ++it) {
         if ((*it)->getCurrPos() == make_pair(row, col)) {
-            delete *it; // deletes piece from heap
+            // delete *it; // deletes piece from heap
+            deadPiece = *it;
             this->blackPieces.erase(it);
             break;
         }
     }
     for (auto it = whitePieces.begin(); it != whitePieces.end(); ++it) {
         if ((*it)->getCurrPos() == make_pair(row, col)) {
-            delete *it; // deletes piece from heap
+            // delete *it; // deletes piece from heap
+            deadPiece = *it;
             this->whitePieces.erase(it);
             break;
         }
     }
+    return deadPiece;
 }
 
 bool Game::hasPiece(bool isBlackTurn, int row, int col) {
@@ -130,9 +133,16 @@ bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow,
     // fetches piece
     Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
     // checks if proposed move is in list of psuedo moves
+    // removes all would be check moves
+    for (auto piece : this->whitePieces) {
+        piece->filterForCauseCheck();
+    }
+    for (auto piece : this->blackPieces) {
+        piece->filterForCauseCheck();
+    }
     for (auto coords : movingPiece->getMoves()) {
         if (coords.first == endRow && coords.second == endCol) return true;
-    }
+    } // now we know that piece move is 100% valid and wont cause check
     return false;
 }
 
@@ -152,7 +162,7 @@ void Game::updateAllPseudoMoves() {
 void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
     // must check if move is valid first!!!
     // two cases: 1. piece moves to empty spot, 2. piece kills other piece
-
+    
     // needs to update, 
     this->updateAllPseudoMoves();
     // remove piece still works if nothing is there
@@ -167,8 +177,8 @@ void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, in
 
 }
 
-bool Game::isGameOver() {
-    return this->board->hasCheckmate() || this->board->hasStalemate();
+bool Game::isGameOver(bool isBlackTurn) {
+    return this->board->isCheckmate(isBlackTurn) || this->board->isStalemate(isBlackTurn);
 }
 
 Game::~Game() {

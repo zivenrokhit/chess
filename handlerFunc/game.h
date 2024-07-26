@@ -18,17 +18,19 @@ class Game {
     vector<Piece *> blackPieces; // add/remove as you go in setup
     string boardArr[8][8];
     Board *board;
+    // bool isWhiteChecked;
+    // bool isBlackChecked;
 public: 
     Game(string whitePType, int whitePLevel,
          string blackPType, int blackPLevel); // done
-    void addPiece(bool isBlackTurn, char symbol, int row, int col); // done
-    void removePiece(int row, int col); //done 
+    void addPiece(bool isBlackTurn, string symbol, int row, int col); // done
+    Piece *removePiece(int row, int col); //done 
     bool hasPiece(bool isBlackTurn, int row, int col); // done
     Piece *getPiece(bool isBlackTurn, int row, int col); //done
     ~Game(); // must itr through pieces and delete off heap
     bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); //done
     void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); // done
-    bool isGameOver(); // done
+    bool isGameOver(bool); // done
     void print(); //done 
     void updateAllPseudoMoves();
 };

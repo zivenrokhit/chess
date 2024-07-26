@@ -11,9 +11,8 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
     // pawns should be able to move forward 1/2, diagonal 1 left or right
     // mov forward 2 only allowed when pawn on first row
 
-
     if(this->row == 1){
-        vector<String> vecEndPos;
+        vector<string> vecEndPos;
         pair<int, int> coordinates(this->row, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1
         pair<int, int> coordinates(this->row, this->col + 2); 
@@ -23,7 +22,7 @@ vector<pair<int, int>> Pawn::listOfEndPositions()
         pair<int, int> coordinates(this->row  - 1, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1 left 1
     } else {
-        vector<String> vecEndPos;
+        vector<string> vecEndPos;
         pair<int, int> coordinates(this->row, this->col + 1); 
         vecEndPos.emplace_back(coordinates); // up 1
         pair<int, int> coordinates(this->row  + 1, this->col + 1); 

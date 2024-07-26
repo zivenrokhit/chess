@@ -56,12 +56,10 @@ bool isValidSetup(Game *game, char board[8][8], int whiteKingCount, int blackKin
             return false;
         }
     }
-    // return game->check();
 }
 
 
 int main() {
-    // vector<Observer *> allObservers; //creates observers
     Game *game = nullptr;
     char initialBoard[8][8];
     bool gameRunning = false;
@@ -191,7 +189,6 @@ int main() {
             }
         }
     }
-    // for (auto o : allObservers) delete o;
     return 0;
 }
 

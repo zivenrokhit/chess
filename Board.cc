@@ -1,4 +1,5 @@
 #include "board.h"
+#include <utility>
 
 
 Board::Board(string board[8][8]) {
@@ -38,6 +39,83 @@ bool Board::isCheck(bool isBlackTurn) {
 
     return false;
 
+}
+
+
+Piece *Board::getWhiteKing() {
+    for (auto piece : this->whitePieces) {
+        if (piece->getSymbol() == "KING") return piece;
+    }
+}
+
+Piece *Board::getBlackKing() {
+    for (auto piece : this->blackPieces) {
+        if (piece->getSymbol() == "KING") return piece;
+    }
+}
+
+
+bool Board::isWhiteChecked() {
+    Piece *whiteKing = this->getWhiteKing();
+    pair<int, int> pos = whiteKing->getCurrPos();
+    for (auto piece : this->blackPieces) {
+        for (auto attack : piece->getMoves()) {
+            if (pos == attack) return true;
+        }
+    }
+    return false;
+}
+bool Board::isBlackChecked() {
+    Piece *blackKing = this->getBlackKing();
+    pair<int, int> pos = blackKing->getCurrPos();
+    for (auto piece : this->blackPieces) {
+        for (auto attack : piece->getMoves()) {
+            if (pos == attack) return true;
+        }
+    }
+    return false;
+}
+bool Board::isSquareChecked(bool isBlackTurn, int row, int col) {
+    pair<int, int> pos {row, col};
+    vector<Piece *>candidatePieces = isBlackTurn ? this->whitePieces : this->blackPieces;
+    for (auto piece : candidatePieces) {
+        for (auto attack : piece->getMoves()) {
+            if (pos == attack) return true;
+        }
+    }
+     return false;
+}
+
+bool Board::isCheckmate(bool isBlackTurn) {
+    if (isBlackTurn) {
+        return this->isStalemate(isBlackTurn) && this->isBlackChecked();
+    }
+    return this->isStalemate(isBlackTurn) && this->isWhiteChecked();
+}
+
+
+bool Board::isStalemate(bool isBlackTurn) {
+    if (isBlackTurn) {
+        Piece *blackKing = this->getBlackKing();
+        for (auto move : blackKing->getMoves()) {
+            if (!this->isSquareChecked(move.first, move.second)) {
+                return false;
+            }
+        }
+        return this->isBlackChecked() == false;
+    }
+    Piece *whiteKing = this->getWhiteKing();
+    for (auto move : whiteKing->getMoves()) {
+        if (!this->isSquareChecked(move.first, move.second)) {
+            return false;
+        }
+    }
+    return this->isWhiteChecked() == false;
+}
+
+
+Game *Board::getGame() {
+    return this->game;
 }
 
 void Board::printBoard() {

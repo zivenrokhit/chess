@@ -23,6 +23,32 @@ void Piece::setCurrentPos(int row, int col) {
     this->col = col;
 }
 
+void Piece::filterForCauseCheck() {
+    for (auto move : this->getMoves()) {
+        // temporarily removed the piece;
+        Piece *dyingPiece = this->board->getGame()->removePiece(move.first, move.second);
+        this->board->getGame()->makeMove(dyingPiece->colour == "BLACK" ? true : false, 
+                                           this->getCurrPos().first, this->getCurrPos().second,
+                                           move.first, move.second );
+        if (dyingPiece->colour == "WHITE") {
+            if (this->board->isBlackChecked()) {
+                this->board->getGame()->addPiece(false, dyingPiece->getSymbol(), dyingPiece->getCurrPos().first, dyingPiece->getCurrPos().second);
+                for (auto itr = this->vecEndPos.begin(); itr != this->vecEndPos.end(); ++itr) {
+                    if ((*itr) == move) this->vecEndPos.erase(itr);
+                }
+            }
+        }
+        if (dyingPiece->colour == "BLACK") {
+            if (this->board->isWhiteChecked()) {
+                this->board->getGame()->addPiece(true, dyingPiece->getSymbol(), dyingPiece->getCurrPos().first, dyingPiece->getCurrPos().second);
+                for (auto itr = this->vecEndPos.begin(); itr != this->vecEndPos.end(); ++itr) {
+                    if ((*itr) == move) this->vecEndPos.erase(itr);
+                }
+            }
+        }
+    }
+}
+
 void Piece::setMoves() {
     this->vecEndPos = this->getMoves();
 }
