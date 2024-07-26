@@ -5,8 +5,8 @@
 #include "board.h"
 #include <utility>
 #include <cstdlib>
-#include <string>
 #include <vector>
+#include <string>
 
 using namespace std;
 

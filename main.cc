@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include "game.h"
-#include <string>
 #include <utility>
 #include "converter.h"
+#include <string>
 
 using namespace std;
 
@@ -24,13 +24,13 @@ int computerLevel(const string& computer) {
 }
 
 void displayBoard(const string initialBoard[8][8]) {
-    cout << "  a b c d e f g h" << endl;
     for (int i = 0; i < 8; ++i) {
         cout << 8 - i << " ";
         for (int j = 0; j < 8; ++j) {
             cout << initialBoard[i][j] << " ";
         }
         cout << endl;
+        cout << "  abcdefgh" << endl;
     }
 }
 
@@ -42,7 +42,6 @@ bool isValidCoord(const string& pos) {
 }
 
 bool isValidSetup(bool isBlackTurn, Game *game, const string board[8][8], int whiteKingCount, int blackKingCount) {
-    cout << "memLeak 1.7" << endl;
     if (whiteKingCount != KINGS_NEEDED) {
         cout << "WHITE MUST HAVE EXACTLY 1 KING" << endl;
         return false;
@@ -51,18 +50,14 @@ bool isValidSetup(bool isBlackTurn, Game *game, const string board[8][8], int wh
         cout << "BLACK MUST HAVE EXACTLY 1 KING" << endl;
         return false;
     }
-    cout << "memLeak 1.71" << endl;
     for (int i = 0; i < 8; i++) {
         if (board[0][i] == "P" || board[7][i] == "P") {
-            cout << "YOU CANNOT HAVE PAWNS IN THE FIRST OR LAST ROW" << endl;
             return false;
         }
     }
-    cout << "memLeak 1.72" << endl;
     if (game->isGameOver(isBlackTurn)) {
         return false;
     }
-    cout << "memLeak 1.73" << endl;
     return true;
 }
 
@@ -87,42 +82,32 @@ int main() {
             string colour = isBlackTurn ? "BLACK" : "WHITE";
             int whiteKingCount = 0, blackKingCount = 0;
             while (cin >> next) {
-                cout << "memLeak 1" << endl;
                 if (next == "done") {
                     if (isValidSetup(isBlackTurn, game, initialBoard, whiteKingCount, blackKingCount)) {
-                        cout << "memLeak 1.5" << endl;
                         break;
                     }
                     else cout << "Incorrect setup, you must rearrange some pieces!" << endl;
                 } else if (next == "+") {
-                    cout << "memLeak 2" << endl;
                     string piece, pos;
                     cin >> piece >> pos;
                     if (!isValidCoord(pos)) {
-                        cout << "memLeak 3" << endl;
                         cout << "Invalid coordinate provided" << endl;
                         continue;
                     }
-                    cout << "memLeak 4" << endl;
                     int row = 8 - (pos[1] - '0');
                     int col = pos[0] - 'a';
                     if (piece == "K") {
-                        cout << "memLeak 5" << endl;
                         isBlackTurn ? ++blackKingCount : ++whiteKingCount;
                     }
                     if (game) {
-                        cout << "memLeak 6" << endl;
                         game->removePiece(row, col);
-                        cout << "memLeak 7" << endl;
                         game->addPiece(isBlackTurn, piece, row, col);
                     }
                     initialBoard[row][col] = piece;
-                    cout << "memLeak 8" << endl;
                     displayBoard(initialBoard);
                 } else if (next == "-") {
                     string pos;
                     cin >> pos;
-                    cout << "memLeak 9" << endl;
                     if (!isValidCoord(pos)) {
                         cout << "Invalid coordinate provided" << endl;
                         continue;
@@ -131,21 +116,17 @@ int main() {
                     int col = pos[0] - 'a';
                     if (initialBoard[row][col] == "_") continue;
                     if (game) {
-                        cout << "memLeak 10" << endl;
                         game->removePiece(row, col);
                     }
                     initialBoard[row][col] = '_';
-                    cout << "memLeak 11" << endl;
                     displayBoard(initialBoard);
                 } else if (next == "=") {
                     cin >> colour;
-                    cout << "memLeak 12" << endl;
                     isBlackTurn = (colour == "BLACK");
                 }
             }
         } else if (command == "game") {
             if (gameRunning) {
-                cout << "memLeak 13" << endl;
                 cout << "There is an ongoing game!" << endl; 
                 continue;
             }

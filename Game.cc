@@ -48,6 +48,7 @@ Game::Game( string whitePType,
                 boardArr[i][j] = "_"; 
             }
         }
+        cout << "line 2" << endl;
         this->board = new Board{ this};
 }
 
@@ -137,18 +138,14 @@ Piece *Game::getPiece(bool isBlackTurn, int row, int col) {
 
 bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
     //check if player is moving a piece they own
-    cout << "in isValid Move" << endl;
     if (!this->hasPiece(isBlackTurn, startRow, startCol)) return false;
     // fetches piece
-    cout << "line 1" << endl;
     Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
     // checks if proposed move is in list of psuedo moves
     // removes all would be check moves
-    cout << "line 2" << endl;
     for (auto piece : this->whitePieces) {
         piece->filterForCauseCheck();
     }
-    cout << "line 3" << endl;
     for (auto piece : this->blackPieces) {
         piece->filterForCauseCheck();
     }
@@ -156,7 +153,6 @@ bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow,
     for (auto coords : movingPiece->getMoves()) {
         if (coords.first == endRow && coords.second == endCol) return true;
     } // now we know that piece move is 100% valid and wont cause check
-    cout << "line 4" << endl;
     return false;
 }
 
@@ -192,7 +188,6 @@ void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, in
 }
 
 bool Game::isGameOver(bool isBlackTurn) {
-    cout << "memLeak 1.7112" << endl;
     return this->board->isCheckmate(isBlackTurn) || this->board->isStalemate(isBlackTurn);
 }
 

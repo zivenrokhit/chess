@@ -3,17 +3,15 @@
 
 #include <vector>
 #include <map>
-#include <string>
 #include "observer.h"
 #include "subject.h"
 #include "piece.h"
 #include "game.h"
+#include <string>
 
 using namespace std;
 class Game;
-// concrete subject
 class Board: public Subject {
-    // vector<Observer *>observers; already part of the subject class
     friend class Game;
     vector<Piece *> whitePieces;
     vector<Piece *> blackPieces;
@@ -21,7 +19,7 @@ class Board: public Subject {
 public:
     string **board;
     Board(Game *game);
-    void printBoard(); // done
+    void printBoard();
     bool isWhiteChecked();
     bool isBlackChecked();
     bool isSquareChecked(bool isBlackTurn, int row, int col);

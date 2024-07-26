@@ -4,9 +4,9 @@
 #include "board.h"
 #include "player.h"
 #include "piece.h"
-#include <string>
 #include <vector>
 #include <map>
+#include <string>
 
 using namespace std;
 

@@ -1,1 +1,0 @@
-graphicsObserver.o: graphicsObserver.cc
