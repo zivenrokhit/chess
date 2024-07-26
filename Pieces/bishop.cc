@@ -1,7 +1,7 @@
 #include "bishop.h"
 
 Bishop::Bishop(int row, int col, Board *board ,const string& colour, const string& symbol,const vector<pair<int,int>> vecEndPos)
-    : Piece(row, col,board , colour, "BISHOP",vecEndPos) {}
+    : Piece(row, col,board , colour, "BISHOP", vecEndPos) {}
 
 bool Bishop::isCaptured() const {
     return false;
@@ -11,11 +11,11 @@ vector<pair<int, int>> Bishop::listOfEndPositions() {
     vector<pair<int, int>> vecEndPos;
 
     // Bishop movements: diagonal movements
-    for (int i = -7; i <= 7; ++i) {
-        if (i != 0) {
-            if (row + i >= 0 && row + i < 8 && col + i >= 0 && col + i < 8) vecEndPos.emplace_back(row + i, col + i); // bottom-right and top-left
-            if (row + i >= 0 && row + i < 8 && col - i >= 0 && col - i < 8) vecEndPos.emplace_back(row + i, col - i); // bottom-left and top-right
-        }
+    for (int i = 1; i < 8; ++i) { // start from 1 to avoid no movement
+        if (row + i < 8 && col + i < 8) vecEndPos.emplace_back(row + i, col + i); // bottom-right
+        if (row + i < 8 && col - i >= 0) vecEndPos.emplace_back(row + i, col - i); // bottom-left
+        if (row - i >= 0 && col + i < 8) vecEndPos.emplace_back(row - i, col + i); // top-right
+        if (row - i >= 0 && col - i >= 0) vecEndPos.emplace_back(row - i, col - i); // top-left
     }
 
     // filter out positions off board or occupied by own pieces
