@@ -19,20 +19,20 @@ vector<pair<int, int>> Knight::listOfEndPositions()
     vector<pair<int, int>> vecEndPos;
     pair<int, int> coordinates(this->row - 1, this->col + 2);
     vecEndPos.emplace_back(coordinates); // up 2 left 1
-    pair<int, int> coordinates(this->row + 1, this->col + 2);
-    vecEndPos.emplace_back(coordinates); // up 2 right 1
-    pair<int, int> coordinates(this->row + 1, this->col - 2);
-    vecEndPos.emplace_back(coordinates); // down 2 right 1
-    pair<int, int> coordinates(this->row - 1, this->col - 2);
-    vecEndPos.emplace_back(coordinates); // down 2 left 1
-    pair<int, int> coordinates(this->row + 2, this->col + 1);
-    vecEndPos.emplace_back(coordinates); // up 1 right 2
-    pair<int, int> coordinates(this->row - 2, this->col + 1);
-    vecEndPos.emplace_back(coordinates); // up 1 left 2
-    pair<int, int> coordinates(this->row + 2, this->col - 1);
-    vecEndPos.emplace_back(coordinates); // down 1 right 2
-    pair<int, int> coordinates(this->row - 2, this->col - 1);
-    vecEndPos.emplace_back(coordinates); // down 1 left 2
+    pair<int, int> coordinates2(this->row + 1, this->col + 2);
+    vecEndPos.emplace_back(coordinates2); // up 2 right 1
+    pair<int, int> coordinates3(this->row + 1, this->col - 2);
+    vecEndPos.emplace_back(coordinates3); // down 2 right 1
+    pair<int, int> coordinates4(this->row - 1, this->col - 2);
+    vecEndPos.emplace_back(coordinates4); // down 2 left 1
+    pair<int, int> coordinates5(this->row + 2, this->col + 1);
+    vecEndPos.emplace_back(coordinates5); // up 1 right 2
+    pair<int, int> coordinates6(this->row - 2, this->col + 1);
+    vecEndPos.emplace_back(coordinates6); // up 1 left 2
+    pair<int, int> coordinates7(this->row + 2, this->col - 1);
+    vecEndPos.emplace_back(coordinates7); // down 1 right 2
+    pair<int, int> coordinates8(this->row - 2, this->col - 1);
+    vecEndPos.emplace_back(coordinates8); // down 1 left 2
    for (auto it = vecEndPos.begin(); it != vecEndPos.end(); it++){
         if (it->first < 0 || it->second > 7)
         {

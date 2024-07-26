@@ -10,28 +10,30 @@
 
 using namespace std;
 
+class Board;
+class Piece;
+
 class Game {
     friend class Board;
-    Player *whitePlayer; //initialized in ctor
-    Player *blackPlayer; //initialized in ctor
-    vector<Piece *> whitePieces; // add/remove as you go in setup
-    vector<Piece *> blackPieces; // add/remove as you go in setup
-    string boardArr[8][8];
+    friend class Level1;
+    Player *whitePlayer;
+    Player *blackPlayer; 
+    vector<Piece *> whitePieces; 
+    vector<Piece *> blackPieces; 
+    string** boardArr;
     Board *board;
-    // bool isWhiteChecked;
-    // bool isBlackChecked;
 public: 
     Game(string whitePType, int whitePLevel,
          string blackPType, int blackPLevel); // done
     void addPiece(bool isBlackTurn, string symbol, int row, int col); // done
-    Piece *removePiece(int row, int col); //done 
+    Piece *removePiece(int row, int col); // done
     bool hasPiece(bool isBlackTurn, int row, int col); // done
-    Piece *getPiece(bool isBlackTurn, int row, int col); //done
-    ~Game(); // must itr through pieces and delete off heap
-    bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); //done
+    Piece *getPiece(bool isBlackTurn, int row, int col); // done
+    ~Game(); 
+    bool isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); // done
     void makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol); // done
     bool isGameOver(bool); // done
-    void print(); //done 
+    void print(); // done
     void updateAllPseudoMoves();
 };
 

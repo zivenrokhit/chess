@@ -1,6 +1,5 @@
 #ifndef TEXTOBSERVER_H
 #define TEXTOBSERVER_H
-// the goal of this file it declare the required class and methods to output the text display of the board 
 #include "board.h"
 #include <iostream>
 #include <utility>
@@ -8,13 +7,15 @@
 
 using namespace std;
 
-class TextObserver {
+class TextObserver: public Observer {
     private:
     Board *subject;
     public:
     explicit TextObserver(Board *sub);
     ~TextObserver();
-    void notify() override;
+    void notify();
+    void printCurrState();
+    void declareState();
 };
 
 #endif

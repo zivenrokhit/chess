@@ -11,10 +11,10 @@ vector<pair<int,int>> Level1::getRandomPiece(bool isBlackTurn){
     pair<int,int> starting;
     pair<int,int> ending;
 
-    if(thisisBlackTurn){
+    if(isBlackTurn){
         // select from black pieces
         int numOfBlackPieces = this->game->blackPieces.size();
-        int index = rand() % numOfBlackPieces.size();
+        int index = rand() % numOfBlackPieces;
         starting.first = this->game->blackPieces[index]->getCurrPos().first;
         starting.second = this->game->blackPieces[index]->getCurrPos().second;
         coordinates.emplace_back(starting);
@@ -24,7 +24,7 @@ vector<pair<int,int>> Level1::getRandomPiece(bool isBlackTurn){
         return coordinates;
     } else { 
         int numOfWhitePieces = this->game->whitePieces.size();
-        int index = rand() % numOfWhitePieces.size();
+        int index = rand() % numOfWhitePieces;
         starting.first = this->game->whitePieces[index]->getCurrPos().first;
         starting.second = this->game->whitePieces[index]->getCurrPos().second;
         coordinates.emplace_back(starting);
@@ -42,7 +42,7 @@ pair<int,int> Level1::getRandomMove(const vector<pair<int,int>> vecEndPos){
         int index = rand() % vecEndPos.size();
         return vecEndPos[index];
     } else {
-        this->getRandomPiece();
+        this->getRandomPiece(this->side == "BLACK");
     }
 }
 

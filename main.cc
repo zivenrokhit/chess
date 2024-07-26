@@ -10,38 +10,39 @@ using namespace std;
 const int KINGS_NEEDED = 1;
 
 void printFinalScore(int blackScore, int whiteScore) {
-        cout << "Final Score:" << endl;
-        cout << "White: " << whiteScore << endl;
-        cout << "Black: " << blackScore << endl;
+    cout << "Final Score:" << endl;
+    cout << "White: " << whiteScore << endl;
+    cout << "Black: " << blackScore << endl;
 }
 
-int computerLevel(string computer) {
-    if(computer == "computer[1]") return 1;
-    else if(computer == "computer[2]") return 2;
-    else if(computer == "computer[3]") return 3;
+int computerLevel(const string& computer) {
+    if (computer == "computer[1]") return 1;
+    else if (computer == "computer[2]") return 2;
+    else if (computer == "computer[3]") return 3;
     else if (computer == "computer[4]") return 4;
     else return 0;
 }
 
-
-void displayBoard(string initialBoard[8][8]) {
+void displayBoard(const string initialBoard[8][8]) {
+    cout << "  a b c d e f g h" << endl;
     for (int i = 0; i < 8; ++i) {
+        cout << 8 - i << " ";
         for (int j = 0; j < 8; ++j) {
-            cout << initialBoard[i][j];
+            cout << initialBoard[i][j] << " ";
         }
         cout << endl;
     }
 }
 
-bool isValidCoord(const string &pos) {
-    if (pos.length() != 2 || pos[0] < 'a' || pos[0] > 'h' || pos[1] <= '0' || pos[1] >= '9') {
-        return true;
-    }
-    return false;
+bool isValidCoord(const string& pos) {
+    if (pos.length() != 2) return false;
+    char col = pos[0];
+    char row = pos[1];
+    return (col >= 'a' && col <= 'h') && (row >= '1' && row <= '8');
 }
 
-bool isValidSetup(Game *game, string board[8][8], int whiteKingCount, int blackKingCount) {
-// no pawns in first or last row, 1 king each, no one in check
+bool isValidSetup(bool isBlackTurn, Game *game, const string board[8][8], int whiteKingCount, int blackKingCount) {
+    cout << "memLeak 1.7" << endl;
     if (whiteKingCount != KINGS_NEEDED) {
         cout << "WHITE MUST HAVE EXACTLY 1 KING" << endl;
         return false;
@@ -50,14 +51,20 @@ bool isValidSetup(Game *game, string board[8][8], int whiteKingCount, int blackK
         cout << "BLACK MUST HAVE EXACTLY 1 KING" << endl;
         return false;
     }
+    cout << "memLeak 1.71" << endl;
     for (int i = 0; i < 8; i++) {
         if (board[0][i] == "P" || board[7][i] == "P") {
             cout << "YOU CANNOT HAVE PAWNS IN THE FIRST OR LAST ROW" << endl;
             return false;
         }
     }
+    cout << "memLeak 1.72" << endl;
+    if (game->isGameOver(isBlackTurn)) {
+        return false;
+    }
+    cout << "memLeak 1.73" << endl;
+    return true;
 }
-
 
 int main() {
     Game *game = nullptr;
@@ -69,64 +76,79 @@ int main() {
     while (cin >> command) {
         if (command == "setup") {
             if (gameRunning) continue;
-            isBlackTurn = false; //start on white
+            gameRunning = true;
+            isBlackTurn = false;
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
                     initialBoard[i][j] = '_';
                 }
             }
             string next;
-            string colour = isBlackTurn ? "black" : "white";
+            string colour = isBlackTurn ? "BLACK" : "WHITE";
             int whiteKingCount = 0, blackKingCount = 0;
             while (cin >> next) {
+                cout << "memLeak 1" << endl;
                 if (next == "done") {
-                    if (isValidSetup(game, initialBoard, whiteKingCount, blackKingCount)) break;
-                    else cout << "incorrect setup, you must rearrange some pieces!\n";
+                    if (isValidSetup(isBlackTurn, game, initialBoard, whiteKingCount, blackKingCount)) {
+                        cout << "memLeak 1.5" << endl;
+                        break;
+                    }
+                    else cout << "Incorrect setup, you must rearrange some pieces!" << endl;
                 } else if (next == "+") {
-                    int row, col;
-                    string piece;
-                    string pos;
+                    cout << "memLeak 2" << endl;
+                    string piece, pos;
                     cin >> piece >> pos;
-                    // checking for invalid input or bounds
                     if (!isValidCoord(pos)) {
-                        cout << "inavlid coordinate provided" << endl;
+                        cout << "memLeak 3" << endl;
+                        cout << "Invalid coordinate provided" << endl;
                         continue;
                     }
+                    cout << "memLeak 4" << endl;
+                    int row = 8 - (pos[1] - '0');
+                    int col = pos[0] - 'a';
                     if (piece == "K") {
+                        cout << "memLeak 5" << endl;
                         isBlackTurn ? ++blackKingCount : ++whiteKingCount;
                     }
-                    row = pos[1] - '1';
-                    col = pos[0] - 'a';
-                    game->removePiece(row, col);
-                    game->addPiece(isBlackTurn, piece, row, col);
+                    if (game) {
+                        cout << "memLeak 6" << endl;
+                        game->removePiece(row, col);
+                        cout << "memLeak 7" << endl;
+                        game->addPiece(isBlackTurn, piece, row, col);
+                    }
                     initialBoard[row][col] = piece;
+                    cout << "memLeak 8" << endl;
                     displayBoard(initialBoard);
                 } else if (next == "-") {
                     string pos;
-                    int row, col;
                     cin >> pos;
+                    cout << "memLeak 9" << endl;
                     if (!isValidCoord(pos)) {
-                        cout << "inavlid coordinate provided" << endl;
+                        cout << "Invalid coordinate provided" << endl;
                         continue;
                     }
-                    row = pos[0] - '1';
-                    col = pos[1] - 'a';
+                    int row = 8 - (pos[1] - '0');
+                    int col = pos[0] - 'a';
                     if (initialBoard[row][col] == "_") continue;
-                    game->removePiece( row, col);
+                    if (game) {
+                        cout << "memLeak 10" << endl;
+                        game->removePiece(row, col);
+                    }
                     initialBoard[row][col] = '_';
+                    cout << "memLeak 11" << endl;
                     displayBoard(initialBoard);
                 } else if (next == "=") {
                     cin >> colour;
-                    isBlackTurn = (colour == "BLACK" ? true : false);
+                    cout << "memLeak 12" << endl;
+                    isBlackTurn = (colour == "BLACK");
                 }
             }
-        }
-        else if (command == "game") {
+        } else if (command == "game") {
             if (gameRunning) {
-                cout << "there is an ongoing game!" << endl; 
+                cout << "memLeak 13" << endl;
+                cout << "There is an ongoing game!" << endl; 
                 continue;
             }
-            //make seperate logic for computer interpreter
             isBlackTurn = false;
             string p1, p2;
             int whiteComputerLevel = 0;
@@ -139,58 +161,52 @@ int main() {
                 blackComputerLevel = computerLevel(p2);
             }
             delete game;
-            // all it does is initialize player
             game = new Game{p1, whiteComputerLevel, p2, blackComputerLevel};
-            gameRunning = true;
-        }
-        else if (command == "resign") {
+        } else if (command == "resign") {
             if (gameRunning) {
-                isBlackTurn == true ?  ++blackScore : ++whiteScore;
-                //game.end()
+                if (isBlackTurn) {
+                    ++blackScore;
+                } else {
+                    ++whiteScore;
+                }
                 gameRunning = false;
             }
             continue;
-        }
-        else if (command == "move") {
+        } else if (command == "move") {
             if (!gameRunning) {
-                cout << "there is no game running!" << endl;
+                cout << "There is no game running!" << endl;
                 continue;
             }
             isBlackTurn = !isBlackTurn;
-            // add logic for computer moving and call appopriate method 
-            // so that computer moves and input doesnt read for coords!
             string startPos, endPos;
-            char pawnPromo = '-1';
             cin >> startPos >> endPos;
-            int startRow = startPos[0] - '1';
-            int startCol = startPos[1] - 'a';
-            int endRow = endPos[0] - '1';
-            int endCol = endPos[1] - 'a';
             if (!isValidCoord(startPos) || !isValidCoord(endPos)) {
-                cout << "inavlid coordinate provided" << endl;
+                cout << "Invalid coordinate provided" << endl;
                 continue;
             }
-            if (game->isValidMove(isBlackTurn, startRow, startCol, endRow, endCol)) {
+            int startRow = 8 - (startPos[1] - '0');
+            int startCol = startPos[0] - 'a';
+            int endRow = 8 - (endPos[1] - '0');
+            int endCol = endPos[0] - 'a';
+            if (game && game->isValidMove(isBlackTurn, startRow, startCol, endRow, endCol)) {
                 string movingPiece = initialBoard[startRow][startCol];
-                initialBoard[startRow][startCol] == "_";
-                initialBoard[endRow][endCol] == movingPiece;
+                initialBoard[startRow][startCol] = "_";
+                initialBoard[endRow][endCol] = movingPiece;
                 game->makeMove(isBlackTurn, startRow, startCol, endRow, endCol);
-            }
-            //consider pawn promotion if have time
-            // if (game.isValidMove(isBlackTurn, startPos, endPos)) {
-            //     game.makeMove(isBlackTurn, startPos, endPos);
-            // } else {
-            //     cout << "INVALID MOVE MONKEY BOY!" << endl;
-            // }
-            if (game->isGameOver(isBlackTurn)) {
-                isBlackTurn == true ?  ++blackScore : ++whiteScore;
-                gameRunning = false;
-                printFinalScore(blackScore, whiteScore);
+                if (game->isGameOver(isBlackTurn)) {
+                    if (isBlackTurn) {
+                        ++blackScore;
+                    } else {
+                        ++whiteScore;
+                    }
+                    gameRunning = false;
+                    printFinalScore(blackScore, whiteScore);
+                }
+            } else {
+                cout << "Invalid move" << endl;
             }
         }
     }
+    delete game;
     return 0;
 }
-
-
-

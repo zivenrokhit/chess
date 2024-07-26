@@ -41,11 +41,19 @@ Game::Game( string whitePType,
         } else if (blackPLevel == 4) {
             this->blackPlayer = new Level4 {"BLACK", this};
         }
-
+        boardArr = new string*[8];
+        for (int i = 0; i < 8; ++i) {
+            boardArr[i] = new string[8];
+            for (int j = 0; j < 8; ++j) {
+                boardArr[i][j] = "_"; 
+            }
+        }
+        this->board = new Board{ this};
 }
 
 void Game::addPiece(bool isBlackTurn, string symbol, int row, int col) {
     vector<pair<int, int>>tmp_moves;
+    cout << "we in add PIece" << endl;
     if (isBlackTurn) {
         if (symbol == "P") {
             this->blackPieces.emplace_back(new Pawn{row, col, board, "BLACK", "P", tmp_moves});
@@ -129,20 +137,26 @@ Piece *Game::getPiece(bool isBlackTurn, int row, int col) {
 
 bool Game::isValidMove(bool isBlackTurn, int startRow, int startCol, int endRow, int endCol) {
     //check if player is moving a piece they own
+    cout << "in isValid Move" << endl;
     if (!this->hasPiece(isBlackTurn, startRow, startCol)) return false;
     // fetches piece
+    cout << "line 1" << endl;
     Piece *movingPiece = this->getPiece(isBlackTurn, startRow, startCol);
     // checks if proposed move is in list of psuedo moves
     // removes all would be check moves
+    cout << "line 2" << endl;
     for (auto piece : this->whitePieces) {
         piece->filterForCauseCheck();
     }
+    cout << "line 3" << endl;
     for (auto piece : this->blackPieces) {
         piece->filterForCauseCheck();
     }
+
     for (auto coords : movingPiece->getMoves()) {
         if (coords.first == endRow && coords.second == endCol) return true;
     } // now we know that piece move is 100% valid and wont cause check
+    cout << "line 4" << endl;
     return false;
 }
 
@@ -178,13 +192,19 @@ void Game::makeMove(bool isBlackTurn, int startRow, int startCol, int endRow, in
 }
 
 bool Game::isGameOver(bool isBlackTurn) {
+    cout << "memLeak 1.7112" << endl;
     return this->board->isCheckmate(isBlackTurn) || this->board->isStalemate(isBlackTurn);
 }
 
 Game::~Game() {
-    delete boardArr; // maybe
-    delete whitePlayer; 
+    if (boardArr) {
+        for (int i = 0; i < 8; ++i) {
+            delete [] boardArr[i];
+        }
+        delete[] boardArr; 
+    }
+    delete whitePlayer;
     delete blackPlayer;
-    for (auto piece : this->whitePieces) delete piece; 
-    for (auto piece : this->blackPieces) delete piece; 
+    for (auto piece : whitePieces) delete piece;
+    for (auto piece : blackPieces) delete piece;
 }
