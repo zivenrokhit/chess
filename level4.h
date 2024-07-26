@@ -1,7 +1,7 @@
 #ifndef Level4_H
 #define Level4_H
-#include <string>
 #include "computer.h"
+#include <string>
 
 class Level4: public Computer {
     public:

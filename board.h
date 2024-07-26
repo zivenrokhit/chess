@@ -2,39 +2,37 @@
 #define BOARD_H
 
 #include <vector>
+#include <map>
 #include "observer.h"
 #include "subject.h"
 #include "piece.h"
 #include "game.h"
-#include <map>
 #include <string>
 
-// concrete subject
+using namespace std;
+class Game;
 class Board: public Subject {
-    // vector<Observer *>observers; already part of the subject class
-    string board[8][8];
-    vector<Piece *>whitePieces;
-    vector<Piece *>blackPieces;
-    bool resigned;
+    friend class Game;
+    vector<Piece *> whitePieces;
+    vector<Piece *> blackPieces;
     Game *game;
-    public:
-        Board(string board[8][8], Game *game);
-        void printBoard(); // done
-        bool isWhiteChecked();
-        bool isBlackChecked();
-        bool isSquareChecked(bool isBlackTurn, int row, int col);
-        bool wouldCauseCheck(int startRow, int startCol, int endRow, int endCol);
-        Piece *getWhiteKing();
-        Piece *getBlackKing();
-        bool kingsOnly();
-        bool isCheckmate(bool isBlackTurn);
-        bool isStalemate(bool isBlackTurn);
-        bool isCheck(bool); 
-        bool isSquareChecked(int row, int col);
-        Game *getGame();
-        ~Board();
+public:
+    string **board;
+    Board(Game *game);
+    void printBoard();
+    bool isWhiteChecked();
+    bool isBlackChecked();
+    bool isSquareChecked(bool isBlackTurn, int row, int col);
+    Piece *getWhiteKing();
+    Piece *getBlackKing();
+    bool kingsOnly();
+    bool isCheckmate(bool isBlackTurn);
+    bool isStalemate(bool isBlackTurn);
+    bool isCheck(bool isBlackTurn); 
+    Game *getGame();
+    vector<Piece *> getBlackPieces();
+    vector<Piece *> getWhitePieces();
+    ~Board();
 };
-
-
 
 #endif
