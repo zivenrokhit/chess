@@ -1,9 +1,16 @@
 #include "board.h"
 #include <utility>
 
+using namespace std;
 
-Board::Board(string board[8][8]) {
 
+Board::Board(string initBoard[8][8], Game *game)
+    : game(game), whitePieces(game->whitePieces), blackPieces(game->blackPieces) {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            board[i][j] = initBoard[i][j];
+        }
+    }
 }
 
 Board::~Board() {
@@ -121,4 +128,13 @@ Game *Board::getGame() {
 void Board::printBoard() {
     this->notifyObservers();
 }
+
+
+vector<Piece *> Board::getBlackPieces() {
+    return this->blackPieces;
+}
+vector<Piece *> Board::getWhitePieces() {
+    return this->whitePieces;
+}
+
 

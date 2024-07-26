@@ -20,26 +20,26 @@ Game::Game( string whitePType,
             int blackPLevel): board{nullptr}
     {
         if (whitePLevel == 0) {
-            this->whitePlayer = new Human {"white", this};
+            this->whitePlayer = new Human {"WHITE", this};
         } else if (whitePLevel == 1) {
-            this->whitePlayer = new Level1 {"white", this};
+            this->whitePlayer = new Level1 {this};
         } else if (whitePLevel == 2) {
-            this->whitePlayer = new Level2 {"white", this};
+            this->whitePlayer = new Level2 {"WHITE", this};
         } else if (whitePLevel == 3) {
-            this->whitePlayer = new Level3 {"white", this};
+            this->whitePlayer = new Level3 {"WHITE", this};
         } else if (whitePLevel == 4) {
-            this->whitePlayer = new Level4 {"white", this};
+            this->whitePlayer = new Level4 {"WHITE", this};
         }
         if (blackPLevel == 0) {
-            this->blackPlayer = new Human {"black", this};
+            this->blackPlayer = new Human {"BLACK", this};
         } else if (blackPLevel == 1) {
-            this->blackPlayer = new Level1 {"black", this};
+            this->blackPlayer = new Level1 { this};
         } else if (blackPLevel == 2) {
-            this->blackPlayer = new Level2 {"black", this};
+            this->blackPlayer = new Level2 {"BLACK", this};
         } else if (blackPLevel == 3) {
-            this->blackPlayer = new Level3 {"black", this};
+            this->blackPlayer = new Level3 {"BLACK", this};
         } else if (blackPLevel == 4) {
-            this->blackPlayer = new Level4 {"black", this};
+            this->blackPlayer = new Level4 {"BLACK", this};
         }
 
 }

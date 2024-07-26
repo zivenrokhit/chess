@@ -11,7 +11,7 @@
 using namespace std;
 
 class Game {
-    // friend class Player;
+    friend class Board;
     Player *whitePlayer; //initialized in ctor
     Player *blackPlayer; //initialized in ctor
     vector<Piece *> whitePieces; // add/remove as you go in setup
