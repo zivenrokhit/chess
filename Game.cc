@@ -48,7 +48,6 @@ Game::Game( string whitePType,
                 boardArr[i][j] = "_"; 
             }
         }
-        cout << "line 2" << endl;
         this->board = new Board{ this};
 }
 

@@ -52,3 +52,4 @@ void Piece::filterForCauseCheck() {
 void Piece::setMoves() {
     this->vecEndPos = this->getMoves();
 }
+

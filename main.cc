@@ -30,8 +30,8 @@ void displayBoard(const string initialBoard[8][8]) {
             cout << initialBoard[i][j] << " ";
         }
         cout << endl;
-        cout << "  abcdefgh" << endl;
     }
+    cout << "  abcdefgh" << endl;
 }
 
 bool isValidCoord(const string& pos) {
